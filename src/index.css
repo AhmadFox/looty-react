@@ -1,0 +1,27 @@
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/base.css?v=167562908284994134041731017953";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/quantity-popover.css?v=78745769908715669131728238222";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-card.css?v=120341546515895839841728238220";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-cart-drawer.css?v=19530961819213608911728238220";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-cart.css?v=165982380921400067651728238220";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-totals.css?v=15906652033866631521728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-price.css?v=70172745017360139101728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-discounts.css?v=152760482443307489271728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/section-footer.css?v=61390616271034004541728238222";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-newsletter.css?v=4727253280200485261728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-list-menu.css?v=151968516119678728991728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-list-payment.css?v=69253961410771838501728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-list-social.css?v=35792976012981934991728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-search.css?v=165164710990765432851728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-menu-drawer.css?v=110695408305392539491728238221";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-cart-notification.css?v=54116361853792938221728238220";
+@import "https://looty-test.myshopify.com/cdn/shop/t/2/assets/component-cart-items.css?v=127384614032664249911728238220";
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+button:disabled {
+	@apply opacity-30
+}
