@@ -26,11 +26,7 @@ const stepsComponents = [
 	Additionaliformation,
 ];
 
-// Define the props interface
-interface ContainerOptionsProps {
-	variantAdminGraphqlApiId: string | number; // Define the expected type (e.g., string or number)
-}
-const ContainerOptions: React.FC<ContainerOptionsProps> = ({ variantAdminGraphqlApiId }) => {
+const ContainerOptions = () => {
 
 	const { state } = useSteps();
 	const CurrentStepComponent = stepsComponents[state.currentStep];
@@ -45,7 +41,6 @@ const ContainerOptions: React.FC<ContainerOptionsProps> = ({ variantAdminGraphql
 				<CurrentStepComponent />
 			</div>
 			<BottomNav
-				variantApiId={String(variantAdminGraphqlApiId)}
 				isNextDisabled={!state.steps[state.currentStep].isValid}
 			/>
 		</div>

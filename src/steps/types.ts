@@ -1,6 +1,6 @@
 export type ChangeType = {
 	id: string;
-	quintaty: number;
+	quantity: number;
 };
 
 export type BoxViewProps = {
@@ -27,13 +27,13 @@ export type ItemSelectionProps = {
 	currency?: string;
 	image: string;
 	type: string;
-	maxQuintaty: string;
+	maxQuantity: string;
 	totalSelected: number;
 	maxSelection: number;
-	groupQuintaty: number;
+	groupQuantity: number;
 	thubanailRounded?: string;
 	stepIndex: number;
-	updateTotalSelected: (change: { id: string; quintaty: number }) => void; // Updated type
+	updateTotalSelected: (change: { id: string; quantity: number }) => void; // Updated type
 };
 
 

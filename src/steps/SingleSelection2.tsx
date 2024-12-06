@@ -35,10 +35,10 @@ const SingleSelection1 = () => {
 							price={item.price.amount}
 							currency={item.price.currencyCode}
 							type={state.selectionType || "single-selection"}
-							maxQuintaty={String(maxSelection)}
+							maxQuantity={String(maxSelection)}
 							totalSelected={0}
 							maxSelection={maxSelection}
-							groupQuintaty={Number(metafields[3]?.value || 1)}
+							groupQuantity={Number(metafields[3]?.value || 1)}
 							thubanailRounded="rounded-full"
 							stepIndex={state.currentStep}
 							updateTotalSelected={updateTotalSelected}

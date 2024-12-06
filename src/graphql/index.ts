@@ -2,8 +2,11 @@ const endpoint = import.meta.env.VITE_SHOPIFY_ENDPOINT;
 const endpointAPI = import.meta.env.VITE_SHOPIFY_GRAPHQL_API;
 const key = import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
+import { PrepareCart } from "../libs/PrepareCart";
+import { StepState } from "../types/contexts.types";
 import { getProductQuery } from "./queries/product";
 import { isShopifyError } from "./type-guards";
+
 import { Product, ShopifyProductOperation } from "./types";
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never;
@@ -89,34 +92,36 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
 	return product;
 }
 
-export async function addToCart(items: unknown) {
-	console.log('Items ==>', items);	
-	const res = await fetch(`${endpoint}/cart/add.js`, {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({
-			items,
-			// sections: cartDrawer.getSectionsToRender().map((section) => section.id),
+export async function addToCart(state: StepState) {
+
+	try {
+		const { items, attributes } = PrepareCart(state)
+		console.log('Items ==>', items);
+		console.log('attributes ==>', attributes);
+		const res = await fetch(`${endpoint}/cart/add.js`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				items,
+				// sections: cartDrawer.getSectionsToRender().map((section) => section.id),
+			})
 		})
-	})
 
-	if(!res.ok) {
-		throw new Error("Failed to add items to cart");
-	}
-}
-
-export async function updateCart(attributes: unknown) {
-	console.log('Items ==>', attributes);	
-	const res = await fetch(`${endpoint}/cart/add.js`, {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({
-			attributes: attributes,
-			// sections: cartDrawer.getSectionsToRender().map((section) => section.id),
+		await fetch(`${endpoint}/cart/update.js`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				attributes: attributes,
+				// sections: cartDrawer.getSectionsToRender().map((section) => section.id),
+			})
 		})
-	})
 
-	if(!res.ok) {
-		throw new Error("Failed to add items to cart");
+		if(!res.ok) {
+			throw new Error("Failed to add items to cart");
+		}
+		
+	} catch (error) {
+		console.error("Error adding to cart:", error);
 	}
+	
 }

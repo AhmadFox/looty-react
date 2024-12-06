@@ -7,10 +7,10 @@ const Addons = () => {
 	const { state, dispatch } = useSteps();
 
 	// Retrieve the saved selection for the current step
-	const savedSelection = (state.steps[state.currentStep]?.data as Array<{ id: string; quintaty: number }>) || [];
+	const savedSelection = (state.steps[state.currentStep]?.data as Array<{ id: string; quantity: number }>) || [];
 
 	 // Initialize totalSelected from savedSelection
-	const [totalSelected, setTotalSelected] = useState(() => savedSelection.reduce((sum, item) => sum + item.quintaty, 0));
+	const [totalSelected, setTotalSelected] = useState(() => savedSelection.reduce((sum, item) => sum + item.quantity, 0));
 	const [addons1Selections, setAddons1Selections] = useState<ChangeType[]>(savedSelection);
 
 	// Safely access fetched data
@@ -21,7 +21,7 @@ const Addons = () => {
 	const updateTotalSelected = (change: ChangeType) => {
 		
 		setTotalSelected((prev) => 
-			Math.min(addons1MaxSelection, Math.max(0, prev + change.quintaty))
+			Math.min(addons1MaxSelection, Math.max(0, prev + change.quantity))
 		);
 	
 		setAddons1Selections((prevSelections) => {
@@ -31,15 +31,15 @@ const Addons = () => {
 			if (existingIndex >= 0) {
 				// Update existing item
 				const updatedItem = { ...updatedSelections[existingIndex] };
-				updatedItem.quintaty += change.quintaty;
+				updatedItem.quantity += change.quantity;
 	
-				if (updatedItem.quintaty > 0) {
+				if (updatedItem.quantity > 0) {
 					updatedSelections[existingIndex] = updatedItem;
 				} else {
 					// Remove item if quantity becomes 0 or less
 					updatedSelections.splice(existingIndex, 1);
 				}
-			} else if (change.quintaty > 0) {
+			} else if (change.quantity > 0) {
 				// Add new item if quantity is positive
 				updatedSelections.push(change);
 			}
@@ -60,7 +60,7 @@ const Addons = () => {
 
 	// Restore `totalSelected` when navigating back to this component
 	useEffect(() => {
-		const savedTotalSelected = savedSelection.reduce((sum, item) => sum + item.quintaty, 0);
+		const savedTotalSelected = savedSelection.reduce((sum, item) => sum + item.quantity, 0);
 		setTotalSelected(savedTotalSelected);
 	}, [savedSelection]);
 
@@ -79,10 +79,10 @@ const Addons = () => {
 							currency={item.price.currencyCode}
 							optional={true}
 							type="multi-selection"
-							maxQuintaty={String(addons1MaxSelection)}
+							maxQuantity={String(addons1MaxSelection)}
 							totalSelected={totalSelected}
 							maxSelection={addons1MaxSelection}
-							groupQuintaty={1}
+							groupQuantity={1}
 							thubanailRounded="rounded-xl"
 							stepIndex={state.currentStep}
 							updateTotalSelected={updateTotalSelected}

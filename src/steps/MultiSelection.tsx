@@ -7,10 +7,10 @@ const MultiSelection = () => {
 	const { state, dispatch } = useSteps();
 
 	// Retrieve the saved selection for the current step
-	const savedSelection = (state.steps[state.currentStep]?.data as Array<{ id: string; quintaty: number }>) || [];
+	const savedSelection = (state.steps[state.currentStep]?.data as Array<{ id: string; quantity: number }>) || [];
 
 	// Initialize totalSelected from savedSelection
-	const [totalSelected, setTotalSelected] = useState(() => savedSelection.reduce((sum, item) => sum + item.quintaty, 0));
+	const [totalSelected, setTotalSelected] = useState(() => savedSelection.reduce((sum, item) => sum + item.quantity, 0));
 	const [selections, setSelections] = useState<ChangeType[]>(savedSelection);
 
 	// Safely access fetched data
@@ -21,7 +21,7 @@ const MultiSelection = () => {
 	const updateTotalSelected = (change: ChangeType) => {
 		
 		setTotalSelected((prev) => 
-			Math.min(maxSelection, Math.max(0, prev + change.quintaty))
+			Math.min(maxSelection, Math.max(0, prev + change.quantity))
 		);
 	
 		setSelections((prevSelections) => {
@@ -31,15 +31,15 @@ const MultiSelection = () => {
 			if (existingIndex >= 0) {
 				// Update existing item
 				const updatedItem = { ...updatedSelections[existingIndex] };
-				updatedItem.quintaty += change.quintaty;
+				updatedItem.quantity += change.quantity;
 	
-				if (updatedItem.quintaty > 0) {
+				if (updatedItem.quantity > 0) {
 					updatedSelections[existingIndex] = updatedItem;
 				} else {
 					// Remove item if quantity becomes 0 or less
 					updatedSelections.splice(existingIndex, 1);
 				}
-			} else if (change.quintaty > 0) {
+			} else if (change.quantity > 0) {
 				// Add new item if quantity is positive
 				updatedSelections.push(change);
 			}
@@ -66,7 +66,7 @@ const MultiSelection = () => {
 
 	// Restore `totalSelected` when navigating back to this component
 	useEffect(() => {
-		const savedTotalSelected = savedSelection.reduce((sum, item) => sum + item.quintaty, 0);
+		const savedTotalSelected = savedSelection.reduce((sum, item) => sum + item.quantity, 0);
 		setTotalSelected(savedTotalSelected);
 	}, [savedSelection]);
 
@@ -85,10 +85,10 @@ const MultiSelection = () => {
 							currency={item.price.currencyCode}
 							optional={true}
 							type="multi-selection"
-							maxQuintaty={String(Number(maxSelection) * Number(metafields[3]?.value || 1))}
+							maxQuantity={String(Number(maxSelection) * Number(metafields[3]?.value || 1))}
 							totalSelected={totalSelected}
 							maxSelection={maxSelection}
-							groupQuintaty={Number(metafields[3]?.value || 1)}
+							groupQuantity={Number(metafields[3]?.value || 1)}
 							thubanailRounded="rounded-full"
 							stepIndex={state.currentStep}
 							updateTotalSelected={updateTotalSelected}

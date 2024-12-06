@@ -2,8 +2,8 @@ import { StepState, Action } from "../types/contexts.types";
 
 // Initial Steps Configuration
 export const initialSteps = [
-	{ title: "Delivery", subTitle: "Choose delivery Method", isValid: false, data: null },
-	{ title: "City", subTitle: "Choose delivery to location", isValid: false, data: null },
+	{ title: "Delivery Method", subTitle: "Select delivery Method", isValid: false, data: null },
+	{ title: "City", subTitle: "Select delivery to location", isValid: false, data: null },
 	{ title: "Preparation", subTitle: "Preparation Type", isValid: false, data: null },
 	{ title: "Select Sandwichs", subTitle: "Choose multiple options from Sandwichs", isValid: false, data: null },
 	{ title: "Select Sandwich", subTitle: "Choose one option", isValid: false, data: null },

@@ -10,10 +10,10 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 	currency,
 	image,
 	type,
-	maxQuintaty,
+	maxQuantity,
 	totalSelected,
 	maxSelection,
-	groupQuintaty,
+	groupQuantity,
 	thubanailRounded,
 	stepIndex,
 	updateTotalSelected
@@ -22,50 +22,44 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 	const { state } = useSteps();
 
 	// Retrieve the saved selection for this step
-	const savedSelection = state.steps[stepIndex]?.data as Array<{ id: string, quintaty: number }> || [];
+	const savedSelection = state.steps[stepIndex]?.data as Array<{ id: string, quantity: number }> || [];
 
 	// Find the matching saved selection (if any)
 	const savedItem = savedSelection.find((item) => item.id === id);
-	const initialCount = savedItem ? savedItem.quintaty : 0;
-
-	// const [count, setCount] = useState(0);
-	// const [checked, setChecked] = useState(savedSelection ? true : false);
+	const initialCount = savedItem ? savedItem.quantity : 0;
+	
 	const [count, setCount] = useState(initialCount);
 	const [checked, setChecked] = useState(savedSelection.length > 0);	
 	
 	const handleDecrement = () => {
 		if (count > 0) {
-			setCount((prev) => prev - groupQuintaty);
-			updateTotalSelected({ id, quintaty: - groupQuintaty });
+			setCount((prev) => prev - groupQuantity);
+			updateTotalSelected({ id, quantity: - groupQuantity });
 		}
 	};
 
 	const handleIncrement = () => {		
-		const maxCount = parseInt(maxQuintaty, 10); // Ensure maxQuintaty is treated as a number
+		const maxCount = parseInt(maxQuantity, 10); // Ensure maxQuantity is treated as a number
 		if (count < maxCount && totalSelected < maxCount) {
-			setCount((prev) => prev + groupQuintaty);
-			updateTotalSelected({ id, quintaty: groupQuintaty });
+			setCount((prev) => prev + groupQuantity);
+			updateTotalSelected({ id, quantity: groupQuantity });
 		}
 	};
 
 	// Handle selection for radio button
 	const handleRadioChange = () => {		
 		setChecked(!checked);
-		updateTotalSelected({ id, quintaty: 1 });
+		updateTotalSelected({ id, quantity: 1 });
 	};
 
 	useEffect(() => {
-		console.log('maxQuintaty', maxQuintaty);
-		console.log('totalSelected', totalSelected);
-		console.log('maxSelection', maxSelection);
-		if (totalSelected >= maxSelection && count === 0) {
+		if (totalSelected >= Number(maxQuantity) && count === 0) {
 			setCount(0); // Reset count if it wasn't selected
 		}
 	}, [totalSelected, maxSelection, count, checked]);
 
 	// Determine whether the item should be "disabled" (dimmed) based on selection
-	let isDimmed = type !== "single-selection" && totalSelected >= maxSelection && count === 0;
-	isDimmed = type !== "single-selection" && type !== "multi-selection" && totalSelected >= Number(maxQuintaty) && count === 0;
+	const isDimmed = type !== "single-selection" && totalSelected >= Number(maxQuantity)  && count === 0;
 
 	return (
 		<li className={`flex justify-between items-center ${isDimmed ? "opacity-30 select-none" : ""}`}>
@@ -96,7 +90,7 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 					</button>
 					<span className="text-[#5a0616]">{count}</span>
 					<button
-						disabled={count === parseInt(maxQuintaty, 10) || totalSelected >= Number(maxQuintaty)}
+						disabled={count === parseInt(maxQuantity, 10) || totalSelected >= Number(maxQuantity)}
 						onClick={handleIncrement}
 						className="w-10 h-10 rounded-full bg-gray-300 text-gray-800"
 					>
