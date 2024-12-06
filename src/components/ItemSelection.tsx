@@ -20,11 +20,18 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 }) => {
 
 	const { state } = useSteps();
-	const [count, setCount] = useState(0);
 
 	// Retrieve the saved selection for this step
 	const savedSelection = state.steps[stepIndex]?.data as Array<{ id: string, quintaty: number }> || [];
-	const [checked, setChecked] = useState(savedSelection ? true : false);	
+
+	// Find the matching saved selection (if any)
+	const savedItem = savedSelection.find((item) => item.id === id);
+	const initialCount = savedItem ? savedItem.quintaty : 0;
+
+	// const [count, setCount] = useState(0);
+	// const [checked, setChecked] = useState(savedSelection ? true : false);
+	const [count, setCount] = useState(initialCount);
+	const [checked, setChecked] = useState(savedSelection.length > 0);	
 	
 	const handleDecrement = () => {
 		if (count > 0) {
@@ -33,9 +40,9 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 		}
 	};
 
-	const handleIncrement = () => {
+	const handleIncrement = () => {		
 		const maxCount = parseInt(maxQuintaty, 10); // Ensure maxQuintaty is treated as a number
-		if (count < maxCount && totalSelected < maxSelection) {
+		if (count < maxCount && totalSelected < maxCount) {
 			setCount((prev) => prev + groupQuintaty);
 			updateTotalSelected({ id, quintaty: groupQuintaty });
 		}
@@ -48,13 +55,17 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 	};
 
 	useEffect(() => {
+		console.log('maxQuintaty', maxQuintaty);
+		console.log('totalSelected', totalSelected);
+		console.log('maxSelection', maxSelection);
 		if (totalSelected >= maxSelection && count === 0) {
 			setCount(0); // Reset count if it wasn't selected
 		}
 	}, [totalSelected, maxSelection, count, checked]);
 
 	// Determine whether the item should be "disabled" (dimmed) based on selection
-	const isDimmed = type !== "single-selection" && totalSelected >= maxSelection && count === 0;
+	let isDimmed = type !== "single-selection" && totalSelected >= maxSelection && count === 0;
+	isDimmed = type !== "single-selection" && type !== "multi-selection" && totalSelected >= Number(maxQuintaty) && count === 0;
 
 	return (
 		<li className={`flex justify-between items-center ${isDimmed ? "opacity-30 select-none" : ""}`}>
@@ -66,7 +77,7 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 				/>
 				<div className="flex flex-col gap-3">
 					<span className="text-2xl font-medium h2 text-[#202020] capitalize flex items-center gap-x-2">
-						{title} {optional && <small className="text-gray-400 font-normal text-base">(Optional)</small>}
+						{title}{" "} {optional && <small className="text-gray-400 font-normal text-base">(Optional)</small>}
 					</span>
 					<span className="text-blue-600 font-medium text-xl">
 						{optional && "+"}
@@ -85,7 +96,7 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 					</button>
 					<span className="text-[#5a0616]">{count}</span>
 					<button
-						disabled={count === parseInt(maxQuintaty, 10) || totalSelected >= maxSelection}
+						disabled={count === parseInt(maxQuintaty, 10) || totalSelected >= Number(maxQuintaty)}
 						onClick={handleIncrement}
 						className="w-10 h-10 rounded-full bg-gray-300 text-gray-800"
 					>

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSteps } from "../context/StepContext";
 
 const Preparation = () => {
@@ -21,9 +22,11 @@ const Preparation = () => {
 		// Mark the step as valid
 		dispatch({ type: "SET_VALID", payload: true });
 
-		dispatch({ type: "SET_PENDING_NEXT_STEP", payload: state.selectionType == "single-selection" ? 4 : 3 });
-
 	};
+
+	useEffect(() => {
+		dispatch({ type: "SET_PENDING_NEXT_STEP", payload: state.selectionType == "single-selection" ? 4 : 3 });
+	}, [])
 
 	// Retrieve the selected preparation from state
 	const selectedPreparation = state.steps[state.currentStep]?.data;

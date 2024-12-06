@@ -26,13 +26,13 @@ const BottomNav: React.FC<BottomNavProps> = ({ variantApiId, isNextDisabled }) =
 	const prepareCartItems = (): Item[] => {
 		const { steps, selectionType } = state;
 
-		const itemSelection1Id = steps[4]?.data?.id?.replace("gid://shopify/ProductVariant/", "") || "";
-		const itemSelection2Id = steps[5]?.data?.id?.replace("gid://shopify/ProductVariant/", "") || "";
+		const itemSelection1Id = steps[4]?.data && steps[4]?.data[0]?.id?.replace("gid://shopify/ProductVariant/", "") || "";
+		const itemSelection2Id = steps[5]?.data && steps[5]?.data[0]?.id?.replace("gid://shopify/ProductVariant/", "") || "";
 		const orderStatus = steps[2]?.data || "";
 
 		const items: Item[] = [
 			{
-				id: itemSelection1Id,
+				id: itemSelection1Id || "",
 				quantity: 1,
 				properties: { _bundleId: variantApiId, status: orderStatus },
 			},
@@ -40,7 +40,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ variantApiId, isNextDisabled }) =
 
 		if (selectionType === "single-selection") {
 			items.push({
-				id: itemSelection2Id,
+				id: itemSelection2Id || "",
 				quantity: 1,
 				properties: { _bundleId: variantApiId, status: orderStatus },
 			});

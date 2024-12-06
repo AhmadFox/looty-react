@@ -5,22 +5,16 @@ import ItemSelection from "../components/ItemSelection";
 
 const Addons = () => {
 	const { state, dispatch } = useSteps();
-	const [totalSelected, setTotalSelected] = useState(0);
 
-	// Check if savedSelection is not null before trying to access its properties
-	const savedSelection = state?.steps[state.currentStep]?.data as Array<{ id: string; quintaty: number }> || null;
+	// Retrieve the saved selection for the current step
+	const savedSelection = (state.steps[state.currentStep]?.data as Array<{ id: string; quintaty: number }>) || [];
 
-	// Safely map over addons1 if savedSelection is not null
-	const addons = savedSelection?.map((addon) => ({
-		...addon,
-	})) || []; // Default to an empty array if addons1 is undefined	
-
-	const [addons1Selections, setAddons1Selections] = useState<ChangeType[]>(addons);
+	 // Initialize totalSelected from savedSelection
+	const [totalSelected, setTotalSelected] = useState(() => savedSelection.reduce((sum, item) => sum + item.quintaty, 0));
+	const [addons1Selections, setAddons1Selections] = useState<ChangeType[]>(savedSelection);
 
 	// Safely access fetched data
 	const metafields = state.fetchedData?.metafields || [];
-
-	// Addon Rose Selections
 	const addons1MaxSelection = parseInt(metafields[6]?.value || "1", 10);
 	const addonsProducts = metafields[5]?.references?.nodes || [];
 
@@ -64,13 +58,18 @@ const Addons = () => {
 		});
 	}, [addons1Selections, dispatch, state.currentStep])
 
+	// Restore `totalSelected` when navigating back to this component
+	useEffect(() => {
+		const savedTotalSelected = savedSelection.reduce((sum, item) => sum + item.quintaty, 0);
+		setTotalSelected(savedTotalSelected);
+	}, [savedSelection]);
+
 	console.log('state =>', state);
 
 	return (
 		<div className="px-8 py-8 sm:px-0">
 			<ul className="flex flex-col gap-6">
-				{addonsProducts.map(
-					(item,idx: number) => (
+				{addonsProducts.map((item,idx: number) => (
 						<ItemSelection
 							key={idx}
 							id={item.id}
