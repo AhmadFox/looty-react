@@ -6,7 +6,7 @@ const PrintableCards = () => {
 	const stepIndex = state.currentStep;
 
 	// Retrieve the previously selected card ID from global state (step data)
-	const savedSelection = state.steps[stepIndex].data as Array<{id: string, quintaty: number}>;
+	const savedSelection = state.steps[stepIndex].data as Array<{id: string, quantity: number}>;
 	console.log('savedSelection', savedSelection);
 	
 	const [selectedCard, setSelectedCard] = useState(savedSelection || null);
@@ -16,12 +16,12 @@ const PrintableCards = () => {
 	const printableCards = metafields[7]?.references?.nodes || []; // Default to empty array
 
 	const handleCardSelection = (id: string) => {
-		setSelectedCard([{id: id, quintaty: 1}]); // Set the selected card locally
+		setSelectedCard([{id: id, quantity: 1}]); // Set the selected card locally
 
 		// Save the selected card ID to the global state
 		dispatch({
 			type: "SET_STEP_DATA",
-			payload: { stepIndex, data: [{id: id, quintaty: 1}] },
+			payload: { stepIndex, data: [{id: id, quantity: 1}] },
 		});
 
 		// Mark the step as valid

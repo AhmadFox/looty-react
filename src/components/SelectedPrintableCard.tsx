@@ -10,7 +10,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 	const [emptyPrintableCard, setEmptyPrintableCard] = useState(false);
 	const [messageCount, setMessageCount] = useState(0);
 
-	const storedCard = state.steps[8]?.data as Array<{id: string, quintaty: number}> || null;
+	const storedCard = state.steps[8]?.data as Array<{id: string, quantity: number}> || null;
 
 	// Safely access 'metafields' with optional chaining
 	const metafields = state.fetchedData?.metafields || [];
@@ -35,7 +35,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 		onChangeMessage('')
 
 		// const stepData = state?.steps[7]?.data as { addons1?: { printable_card?: boolean } };
-		const stepData = state?.steps[7]?.data as { addons1?: Array<{ id: string; quintaty: number }> };
+		const stepData = state?.steps[7]?.data as { addons1?: Array<{ id: string; quantity: number }> };
 		const updatedAddons1 = stepData?.addons1?.map((addon) => ({
 			...addon
 		}));
