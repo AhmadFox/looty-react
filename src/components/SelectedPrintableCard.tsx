@@ -59,8 +59,6 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 		});
 	};
 
-	console.log('state last one ==>', state);
-
 
 	if (!selectableCard || emptyPrintableCard) {
 		return (
@@ -131,7 +129,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 			{/* Message Section */}
 			<div className="flex flex-col gap-2 col-span-2">
 				<label htmlFor="message" className="text-lg font-medium">
-					Message:
+					Message <span className="text-red-500">*</span>
 				</label>
 				<textarea
 					rows={4}

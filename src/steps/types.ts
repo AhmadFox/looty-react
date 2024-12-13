@@ -15,7 +15,9 @@ export type RadioSelectionProps = {
 	id: string;
 	label: string;
 	icon?: string;
+	optional? : string
 	stepIndex: number;
+	disabled?: boolean;
 	onChange: (id: string) => void;
 }
 

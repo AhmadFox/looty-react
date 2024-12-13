@@ -63,6 +63,8 @@ export type ProductData = {
 						edges: Array<{
 							node: {
 								title: string
+								id: string
+								availableForSale?: boolean
 								metafields: Array<{
 									value: string
 								}>
@@ -73,6 +75,7 @@ export type ProductData = {
 			}>
 		}
 	}>;
+	variantApiId: number;
 };
 
 export type StepState = {

@@ -75,7 +75,7 @@ const Preparation = () => {
 						/>
 						Frozen
 					</label>
-					<small className="text-gray-500 text-center">10 min in microwave</small>
+					<small className="text-gray-500 text-center">10 min in oven</small>
 				</div>
 			</div>
 			{

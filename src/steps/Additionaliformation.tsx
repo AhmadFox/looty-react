@@ -1,34 +1,54 @@
 import { useSteps } from "../context/StepContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import SelectedPrintableCard from "../components/SelectedPrintableCard";
+import { StepState } from "../types/contexts.types";
+import DateTime from "../components/form/DateTime";
+import PhoneNumber from "../components/form/PhoneNumber";
 
 const Additionaliformation = () => {
 
-	const {state, dispatch} = useSteps();
+	const { state, dispatch } = useSteps();
 	const stepIndex = state.currentStep;
 
+	const [isFormValid, setIsFormValid] = useState(false);
 	const [formData, setFormData] = useState({
 		senderName: "",
 		recipientName: "",
 		deliveryDate: "",
 		deliveryTime: "",
 		recipientMobile: "",
+		recipientAddress: "",
 		message: ""
 	});
-
 	const [formErrors, setFormErrors] = useState({
 		senderName: "",
 		recipientName: "",
 		deliveryDate: "",
 		deliveryTime: "",
 		recipientMobile: "",
+		recipientAddress: "",
 		message: ""
 	});
 
-	const [isFormValid, setIsFormValid] = useState(false);
+	// Validation helper function
+	const validateField = useCallback((name: string, value: string): string => {
+		switch (name) {
+			case "senderName":
+			case "recipientName":
+				return value.length >= 3 ? "" : `${name} must be at least 3 characters long.`;
+			case "recipientAddress":
+				return value.length >= 6 ? "" : `${name} must be at least 6 characters long.`;
+			case "deliveryDate":
+			case "deliveryTime":
+				return value ? "" : `${name} is required.`;
+			case "recipientMobile":
+				// Mobile validation will be handled by PhoneNumber component
+				return "";
+			default:
+				return "";
+		}
+	}, []);
 
-	const date = new Date();
-	const today = date.toISOString().split('T')[0];
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -36,6 +56,24 @@ const Additionaliformation = () => {
 			...prevState,
 			[name]: value,
 		}));
+	};
+
+	const handleDateTimeChange = (data: { deliveryDate: string; deliveryTime: string }) => {
+		setFormData((prevState) => ({
+			...prevState,
+			...data, // Update deliveryDate and deliveryTime
+		}));
+	};
+
+	// Handle mobile number validation
+	const handleMobileChange = (mobileNumber: string, valid: boolean) => {
+		const errors = { ...formErrors };
+		setFormData((prevState) => ({
+			...prevState,
+			recipientMobile: mobileNumber,
+		}));
+		errors.recipientMobile = valid ? "" : "Invalid mobile number.";
+		setFormErrors(errors);
 	};
 
 	const handelMessage = (message: string) => {
@@ -49,62 +87,29 @@ const Additionaliformation = () => {
 	// Validation logic inside useEffect
 	useEffect(() => {
 		const errors = { ...formErrors };
+		let isValid = true;
 
-		// Validate senderName (Required)
-		if (!formData.senderName) {
-			errors.senderName = "Sender name is required";
-		} else {
-			errors.senderName = "";
-		}
+		// Validate all form fields
+		Object.keys(formData).forEach((field) => {
+			const fieldKey = field as keyof typeof formData; // Explicitly type `field` as a key of `formData`
+			const error = validateField(fieldKey, formData[fieldKey]); // Use the fieldKey to access the value
+			if (error) {
+			errors[fieldKey] = error;
+			isValid = false;
+			} else {
+			errors[fieldKey] = "";
+			}
+		});
 
-		// Validate recipientName (Required)
-		if (!formData.recipientName) {
-			errors.recipientName = "Recipient name is required";
-		} else {
-			errors.recipientName = "";
-		}
-
-		// Validate deliveryDate (Required)
-		if (!formData.deliveryDate) {
-			errors.deliveryDate = "Delivery date is required";
-		} else {
-			errors.deliveryDate = "";
-		}
-
-		// Validate deliveryTime (Required)
-		if (!formData.deliveryTime) {
-			errors.deliveryTime = "Delivery time is required";
-		} else {
-			errors.deliveryTime = "";
-		}
-
-		// Validate recipientMobile (Required and must be 10 digits)
-		const phoneRegex = /^[0-9]{10}$/;
-		if (!formData.recipientMobile) {
-			errors.recipientMobile = "Recipient mobile number is required";
-		} else if (!phoneRegex.test(formData.recipientMobile)) {
-			errors.recipientMobile = "Recipient mobile number must be 10 digits";
-		} else {
-			errors.recipientMobile = "";
-		}
-
-		// Validate message (Optional, but could be required based on your logic)
-		// if (!formData.message) {
-		// 	errors.message = "Message is required";
-		// } else {
-		// 	errors.message = "";
-		// }
-
-		// Set form errors in state
 		setFormErrors(errors);
-
-		// Check if the form is valid (no errors)
-		const isValid = Object.values(errors).every((error) => error === "");
 		setIsFormValid(isValid);
+	}, [formData]);
 
-	}, [formData]); // Trigger this effect whenever formData changes
 
 	useEffect(() => {
+
+		console.log('formData', formData);
+
 
 		if (isFormValid) {
 			// Save the selected card ID to the global state
@@ -112,14 +117,14 @@ const Additionaliformation = () => {
 				type: "SET_STEP_DATA",
 				payload: { stepIndex, data: formData },
 			});
-	
+
 			// Mark the step as valid
 			dispatch({ type: "SET_VALID", payload: true });
 		} else {
 			dispatch({ type: "SET_VALID", payload: false });
 		}
 
-	}, [dispatch, isFormValid, stepIndex, formData])
+	}, [isFormValid])
 
 	console.log('State =>', state);
 
@@ -129,7 +134,7 @@ const Additionaliformation = () => {
 				<SelectedPrintableCard onChangeMessage={handelMessage} />
 
 				<div className="flex flex-col gap-2">
-					<label htmlFor="senderName" className="text-lg font-medium">Sender Name:</label>
+					<label htmlFor="senderName" className="text-lg font-medium">Sender Name <span className="text-red-500">*</span></label>
 					<input
 						type="text"
 						name="senderName"
@@ -139,11 +144,11 @@ const Additionaliformation = () => {
 						onChange={handleChange}
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 					/>
-					{/* {formErrors.senderName && <span className="text-red-500">{formErrors.senderName}</span>} */}
+					{formErrors.senderName && <span className="text-red-500">{formErrors.senderName}</span>}
 				</div>
 
 				<div className="flex flex-col gap-2">
-					<label htmlFor="recipientName" className="text-lg font-medium">Recipient Name:</label>
+					<label htmlFor="recipientName" className="text-lg font-medium">Recipient Name <span className="text-red-500">*</span></label>
 					<input
 						type="text"
 						name="recipientName"
@@ -153,50 +158,41 @@ const Additionaliformation = () => {
 						onChange={handleChange}
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 					/>
-					{/* {formErrors.recipientName && <span className="text-red-500">{formErrors.recipientName}</span>} */}
+					{formErrors.recipientName && <span className="text-red-500">{formErrors.recipientName}</span>}
 				</div>
 
-				<div className="flex flex-col gap-2">
-					<label htmlFor="deliveryDate" className="text-lg font-medium">Delivery Date:</label>
-					<input
-						type="date"
-						name="deliveryDate"
-						id="deliveryDate"
-						value={formData.deliveryDate}
-						min={today}
-						onChange={handleChange}
-						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
-					/>
-					{/* {formErrors.deliveryDate && <span className="text-red-500">{formErrors.deliveryDate}</span>} */}
-				</div>
+				<DateTime onDateTimeChange={handleDateTimeChange} />
 
-				<div className="flex flex-col gap-2">
-					<label htmlFor="deliveryTime" className="text-lg font-medium">Delivery Time:</label>
-					<input
-						type="time"
-						name="deliveryTime"
-						id="deliveryTime"
-						value={formData.deliveryTime}
-						onChange={handleChange}
-						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
-					/>
-					{/* {formErrors.deliveryTime && <span className="text-red-500">{formErrors.deliveryTime}</span>} */}
-				</div>
+				<PhoneNumber onPhoneChange={handleMobileChange} />
+				
+				{
+					state.steps[1].data as StepState &&
+					<div className="flex flex-col gap-2">
+						<label htmlFor="recipientCity" className="text-lg font-medium">Delevery to City <span className="text-red-500">*</span></label>
+						<input
+							type="text"
+							disabled
+							name="recipientCity"
+							id="recipientCity"
+							value={(state.steps[1].data as string) ? (state.steps[1].data as string) : ''}
+							className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
+						/>
+					</div>
+				}
 
 				<div className="flex flex-col gap-2 col-span-2">
-					<label htmlFor="recipientMobile" className="text-lg font-medium">Recipient Mobile Number:</label>
+					<label htmlFor="recipientAddress" className="text-lg font-medium">Recipient Address <span className="text-red-500">*</span></label>
 					<input
-						type="number"
-						name="recipientMobile"
-						id="recipientMobile"
-						maxLength={10}
+						type="text"
+						name="recipientAddress"
+						id="recipientAddress"
 						minLength={10}
-						value={formData.recipientMobile}
+						value={formData.recipientAddress}
 						onChange={handleChange}
-						placeholder="Ex: 07XX-XXX-XXX"
+						placeholder="Area, Street, Building Number, Floor, Apartment Number"
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 					/>
-					{/* {formErrors.recipientMobile && <span className="text-red-500">{formErrors.recipientMobile}</span>} */}
+					{formErrors.recipientAddress && <span className="text-red-500">{formErrors.recipientAddress}</span>}
 				</div>
 			</form>
 		</div>

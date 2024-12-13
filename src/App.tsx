@@ -3,12 +3,11 @@ import { StepsProvider } from "./context/StepContext";
 import ContainerView from "./components/ContainerView";
 import ContainerOptions from "./components/ContainerOptions";
 
-export const variantApiId = "43594928259212";
-
 const App = () => {
 	return (
 		<StepsProvider
 			productHandle="group-selection"
+			variantApiId ={43620356948108}
 		>
 			<main className="page-width p-0 sm:px-8 flex flex-col sm:grid sm:grid-cols-2 sm:gap-9 md:gap-14 lg:gap-16 h-full">
 				<ContainerView />
@@ -27,4 +26,4 @@ export default App;
 // 43594933043340
 
 // group-selection
-// 43594928259212
+// 43620356948108

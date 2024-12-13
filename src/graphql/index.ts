@@ -1,7 +1,3 @@
-const endpoint = import.meta.env.VITE_SHOPIFY_ENDPOINT;
-const endpointAPI = import.meta.env.VITE_SHOPIFY_GRAPHQL_API;
-const key = import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
-
 import { PrepareCart } from "../libs/PrepareCart";
 import { StepState } from "../types/contexts.types";
 import { getProductQuery } from "./queries/product";
@@ -11,9 +7,9 @@ import { Product, ShopifyProductOperation } from "./types";
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never;
 
-// const cartDrawer = document.querySelector("cart-drawer") as HTMLElement & {
-// 	getSectionsToRender: () => { id: string }[];
-// };
+const cartDrawer = document.querySelector("cart-drawer") as HTMLElement & {
+	getSectionsToRender: () => { id: string }[];
+};
 
 export async function shopifyFetch<T>({
 	cache = 'force-cache',
@@ -29,11 +25,11 @@ export async function shopifyFetch<T>({
 	variables?: ExtractVariables<T>;
 }): Promise<{ status: number; body: T } | never> {
 	try {
-		const result = await fetch(endpointAPI, {
+		const result = await fetch("http://127.0.0.1:9292/api/2024-10/graphql.json", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Shopify-Storefront-Access-Token': key,
+				'X-Shopify-Storefront-Access-Token': "66e7ba2f51ab468ba63087b9bb1f4cd9",
 				...headers
 			},
 			body: JSON.stringify({
@@ -98,27 +94,30 @@ export async function addToCart(state: StepState) {
 		const { items, attributes } = PrepareCart(state)
 		console.log('Items ==>', items);
 		console.log('attributes ==>', attributes);
-		const res = await fetch(`${endpoint}/cart/add.js`, {
+		const res = await fetch(`http://127.0.0.1:9292/cart/add.js`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				items,
-				// sections: cartDrawer.getSectionsToRender().map((section) => section.id),
+				sections: cartDrawer.getSectionsToRender().map((section) => section.id),
 			})
 		})
 
-		await fetch(`${endpoint}/cart/update.js`, {
+		await fetch(`/cart/update.js`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				attributes: attributes,
-				// sections: cartDrawer.getSectionsToRender().map((section) => section.id),
+				sections: cartDrawer.getSectionsToRender().map((section) => section.id),
 			})
 		})
 
 		if(!res.ok) {
 			throw new Error("Failed to add items to cart");
 		}
+
+		console.log('cartDrawer', cartDrawer);
+		
 		
 	} catch (error) {
 		console.error("Error adding to cart:", error);

@@ -16,7 +16,7 @@ export const initialSteps = [
 
 // Initial State
 export const initialState: StepState = {
-	currentStep: 0,
+	currentStep: 3,
 	steps: initialSteps,
 	history: [],
 	fetchedData: null,

@@ -1,7 +1,7 @@
 import { useSteps } from "../context/StepContext";
 import { RadioSelectionProps } from "../steps/types";
 
-const OptionsRadio: React.FC<RadioSelectionProps> = ({ name, id, label, icon, stepIndex, onChange }) => {
+const OptionsRadio: React.FC<RadioSelectionProps> = ({ name, id, label, icon, stepIndex, onChange, optional, disabled }) => {
 
 	const { state } = useSteps();
 
@@ -14,23 +14,26 @@ const OptionsRadio: React.FC<RadioSelectionProps> = ({ name, id, label, icon, st
 
 	return (
 		<div className="flex justify-between items-center">
-			<div className="flex items-center gap-2">
+			<div className={`flex items-center gap-2 ${disabled && 'opacity-40 select-none'}`}>
 				{
 					icon === 'shop' ? <ShopIcon /> :
 					icon === 'delevery' ? <DeleveryIcon /> : null
 				}
 				<label
-					className="text-2xl text-gray-800 font-medium cursor-pointer select-none capitalize ps-3"
+					className="text-2xl text-gray-800 font-medium cursor-pointer select-none capitalize ps-3 flex items-center gap-1"
 					htmlFor={id}
 				>
 					{label}
+					<small className="text-base text-gray-500">{optional && optional?.length > 0 ? `(${optional})` : ''}</small>
+					
 				</label>
 			</div>
-			<label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor={id}>
+			<label className={`relative flex items-center p-3 rounded-full cursor-pointer ${disabled && 'opacity-40 select-none'}`} htmlFor={id}>
 				<input
 					type="radio"
 					name={name}
 					id={id}
+					disabled={disabled}
 					checked={savedSelection === id}
 					onChange={handleChange}
 					className="peer relative h-6 w-6 cursor-pointer appearance-none rounded-full border border-gray-400 text-[#5a0616] transition-all"

@@ -21,12 +21,16 @@ const SingleSelection1 = () => {
 		dispatch({ type: "SET_VALID", payload: true });
 	};
 
-	console.log('State =>', state);
+	const filteredProducts = variantsProducts.filter(item =>
+		item.product.variants.edges.some(
+			variant => variant.node.id === item.id && variant.node.availableForSale
+		)
+	);
 
 	return (
 		<div className="px-8 py-8 sm:px-0">
 			<ul className="flex flex-col gap-6">
-				{variantsProducts.map((item, idx: number ) => (
+				{filteredProducts.map((item, idx: number ) => (
 						<ItemSelection
 							key={idx}
 							id={item.id}

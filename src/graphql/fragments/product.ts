@@ -53,7 +53,8 @@ const productFragment = /* GraphQL */ `
 					{ key: "component_addons_1", namespace: "custom" },
 					{ key: "component_addons_1_maximum", namespace: "custom" },
 					{ key: "component_addons_2", namespace: "custom" },
-					{ key: "component_addons_2_max_characters", namespace: "custom" }
+					{ key: "component_addons_2_max_characters", namespace: "custom" },
+					{ key: "available_in_cities", namespace: "custom" },
 					]
 				) {
 					value
@@ -66,12 +67,14 @@ const productFragment = /* GraphQL */ `
 							variants(first: 10) {
 								edges {
 									node {
-									title
-									metafields(
-										identifiers: { key: "component_addons_2_max_characters", namespace: "custom" }
-									) {
-										value
-									}
+										id
+										title
+										availableForSale
+										metafields(
+											identifiers: { key: "component_addons_2_max_characters", namespace: "custom" }
+										) {
+											value
+										}
 									}
 								}
 							}

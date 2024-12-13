@@ -1,62 +1,24 @@
 import { useSteps } from "../context/StepContext";
 import OptionsRadio from "../components/OptionsRadio"
 
-const cities = [
-	{
-		name: 'Amman',
-		id: 'Amman'
-	},
-	{
-		name: 'Irbid',
-		id: 'Irbid'
-	},
-	{
-		name: 'Zarqa',
-		id: 'Zarqa'
-	},
-	{
-		name: 'Mafraq',
-		id: 'Mafraq'
-	},
-	{
-		name: 'Balqa',
-		id: 'Balqa'
-	},
-	{
-		name: 'Madaba',
-		id: 'Madaba'
-	},
-	{
-		name: 'Karak',
-		id: 'Karak'
-	},
-	{
-		name: 'Tafilah',
-		id: 'Tafilah'
-	},
-	{
-		name: 'Ma\'an',
-		id: 'Ma\'an'
-	},
-	{
-		name: 'Aqaba',
-		id: 'Aqaba'
-	},
-	{
-		name: 'Jerash',
-		id: 'Jerash'
-	},
-	{
-		name: 'Ajloun',
-		id: 'Ajloun'
-	},
-];
+type City = {
+	name: string;
+	id: string;
+	optional: string;
+	availability: boolean
+}
 
 const Locations = () => {
 
 	const { state, dispatch } = useSteps();
 	const stepIndex = state.currentStep;
 	const preparationStepIndex = 2;
+
+	const cities = JSON.parse(
+		state.fetchedData?.metafields
+		  ?.find((field) => field?.key === 'available_in_cities')
+		  ?.value || '[]'
+	  );	
 
 	const handleOptionChange = (id: string) => {		
 		// Save the selected option
@@ -83,13 +45,15 @@ const Locations = () => {
 		<div className="px-8 py-8 sm:px-0">
 			<div className="flex flex-col gap-5">
 				{
-					cities.map((city, idx) => (
+					cities.map((city: City, idx: number) => (
 						<OptionsRadio
 							key={idx}
 							name="delevery-cities"
 							id={city.id}
 							label={city.name}
 							stepIndex={stepIndex}
+							optional={city.optional}
+							disabled={!city.availability}
 							onChange={handleOptionChange}
 						/>
 					))

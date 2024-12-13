@@ -11,8 +11,8 @@ const StepsContext = createContext<{
 
 // StepsProvider Component
 export const StepsProvider: React.FC<
-	React.PropsWithChildren<{ productHandle: string }>
-> = ({ children, productHandle }) => {
+	React.PropsWithChildren<{ productHandle: string, variantApiId: number }>
+> = ({ children, productHandle, variantApiId }) => {
 	const [state, dispatch] = useReducer(stepsReducer, initialState);
 
 	// Fetch product data
@@ -32,7 +32,8 @@ export const StepsProvider: React.FC<
 						seo: productData?.seo || {},
 						priceRange: productData.priceRange,
 						options: productData.options,
-						metafields: productData.metafields as []
+						metafields: productData.metafields as [],
+						variantApiId: variantApiId as number
 
 					};
 					dispatch({
