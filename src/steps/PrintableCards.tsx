@@ -7,8 +7,6 @@ const PrintableCards = () => {
 
 	// Retrieve the previously selected card ID from global state (step data)
 	const savedSelection = state.steps[stepIndex].data as Array<{id: string, quantity: number}>;
-	console.log('savedSelection', savedSelection);
-	
 	const [selectedCard, setSelectedCard] = useState(savedSelection || null);
 
 	// Safely access fetched data

@@ -3,11 +3,12 @@ import { useSteps } from "../context/StepContext";
 import { BoxViewProps } from "../steps/types";
 import ViewHeader from "./ViewHeader";
 import ViewHeaderLoader from "./skeleton/ViewHeaderLoader";
+import TimeLine from "./TimeLine";
 
 const ContainerView = () => {
 
 	const { state } = useSteps();
-	const [ collaps, setCollaps ] = useState(false);
+	const [ collaps, setCollaps ] = useState(true);
 
 
 	const productData = state.fetchedData as BoxViewProps | null;
@@ -17,7 +18,7 @@ const ContainerView = () => {
 			style={{ height: collaps ? '100vh' : '180px' }}
 			className="px-8 sm:px-0 h-auto sm:!h-full flex flex-col sticky top-[5.3rem] z-[1] ease-in-out duration-500"
 		>
-			<div className="sm:sticky bg-white sm:top-[5.3rem] lg:top-[6.1rem] pt-6 sm:pt-16 pb-6 sm:border-b sm:border-gray-100 relative">
+			<div className="sm:sticky bg-white sm:top-[5.3rem] lg:top-[6.1rem] pt-6 sm:pt-16 pb-6 sm:border-b sm:border-gray-100 relative z-20">
 				{
 					productData ?
 						<ViewHeader
@@ -52,7 +53,7 @@ const ContainerView = () => {
 				${!collaps ? 'h-0' : 'h-screen'}	
 			`}>
 				<p className="h3 text-center my-2">Order Details</p>
-				
+				<TimeLine />
 			</div>
 		</div>
 	);

@@ -39,8 +39,6 @@ const Locations = () => {
 		dispatch({ type: "SET_PENDING_NEXT_STEP", payload: 2 });
 	};
 
-	console.log('State =>', state);
-
 	return (
 		<div className="px-8 py-8 sm:px-0">
 			<div className="flex flex-col gap-5">

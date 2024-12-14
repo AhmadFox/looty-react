@@ -64,8 +64,6 @@ const Addons = () => {
 		setTotalSelected(savedTotalSelected);
 	}, [savedSelection]);
 
-	console.log('state =>', state);
-
 	return (
 		<div className="px-8 py-8 sm:px-0">
 			<ul className="flex flex-col gap-6">

@@ -92,8 +92,6 @@ export async function addToCart(state: StepState) {
 
 	try {
 		const { items, attributes } = PrepareCart(state)
-		console.log('Items ==>', items);
-		console.log('attributes ==>', attributes);
 		const res = await fetch(`http://127.0.0.1:9292/cart/add.js`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -115,8 +113,6 @@ export async function addToCart(state: StepState) {
 		if(!res.ok) {
 			throw new Error("Failed to add items to cart");
 		}
-
-		console.log('cartDrawer', cartDrawer);
 		
 		
 	} catch (error) {

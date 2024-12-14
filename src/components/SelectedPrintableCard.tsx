@@ -34,22 +34,6 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 		setEmptyPrintableCard(true);
 		onChangeMessage('')
 
-		// const stepData = state?.steps[7]?.data as { addons1?: { printable_card?: boolean } };
-		const stepData = state?.steps[7]?.data as { addons1?: Array<{ id: string; quantity: number }> };
-		const updatedAddons1 = stepData?.addons1?.map((addon) => ({
-			...addon
-		}));
-		dispatch({
-			type: "SET_STEP_DATA",
-			payload: {
-				stepIndex: 7,
-				data: {
-					addons1: updatedAddons1,
-					printable_card: false,
-				},
-			},
-		});
-
 		dispatch({
 			type: "SET_STEP_DATA",
 			payload: {

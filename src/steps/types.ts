@@ -10,6 +10,25 @@ export type BoxViewProps = {
 	};
 };
 
+export interface TimelineNodeProps {
+	data: {
+		data?: string | Array<{
+			id: string; quantity: number
+		}> | {
+			senderName: string;
+				recipientName: string;
+				recipientMobile: string;
+				recipientAddress: string;
+				deliveryTime: string;
+				deliveryDate: string;
+				message?: string;
+		};
+		title: string;
+	};
+	number: number;
+	isLastNode: boolean;
+}
+
 export type RadioSelectionProps = {
 	name: string;
 	id: string;

@@ -1,7 +1,6 @@
 import { useSteps } from "../context/StepContext";
 import { useState, useEffect, useCallback } from "react";
 import SelectedPrintableCard from "../components/SelectedPrintableCard";
-import { StepState } from "../types/contexts.types";
 import DateTime from "../components/form/DateTime";
 import PhoneNumber from "../components/form/PhoneNumber";
 
@@ -77,7 +76,6 @@ const Additionaliformation = () => {
 	};
 
 	const handelMessage = (message: string) => {
-		console.log('message', message);
 		setFormData((prevState) => ({
 			...prevState,
 			message,
@@ -108,9 +106,6 @@ const Additionaliformation = () => {
 
 	useEffect(() => {
 
-		console.log('formData', formData);
-
-
 		if (isFormValid) {
 			// Save the selected card ID to the global state
 			dispatch({
@@ -125,8 +120,6 @@ const Additionaliformation = () => {
 		}
 
 	}, [isFormValid])
-
-	console.log('State =>', state);
 
 	return (
 		<div className="px-8 py-8 sm:px-0">
@@ -166,7 +159,7 @@ const Additionaliformation = () => {
 				<PhoneNumber onPhoneChange={handleMobileChange} />
 				
 				{
-					state.steps[1].data as StepState &&
+					state.steps[1].data as string &&
 					<div className="flex flex-col gap-2">
 						<label htmlFor="recipientCity" className="text-lg font-medium">Delevery to City <span className="text-red-500">*</span></label>
 						<input

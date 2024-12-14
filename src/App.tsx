@@ -6,8 +6,8 @@ import ContainerOptions from "./components/ContainerOptions";
 const App = () => {
 	return (
 		<StepsProvider
-			productHandle="group-selection"
-			variantApiId ={43620356948108}
+			productHandle="single-selection"
+			variantApiId ={43594934976652}
 		>
 			<main className="page-width p-0 sm:px-8 flex flex-col sm:grid sm:grid-cols-2 sm:gap-9 md:gap-14 lg:gap-16 h-full">
 				<ContainerView />
