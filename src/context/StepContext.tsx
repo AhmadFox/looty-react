@@ -42,11 +42,15 @@ export const StepsProvider: React.FC<
 					});
 
 					const selectionType = productData.tags;
+					console.log('selectionType', selectionType);
+					
 					const validSelectionTypes = ["multi-selection", "single-selection", "group-selection"] as const;
 
 					const matchedSelectionType = selectionType?.find((tag) =>
 					validSelectionTypes.includes(tag as typeof validSelectionTypes[number])
 					) as typeof validSelectionTypes[number] | null;
+
+					console.log('matchedSelectionType', matchedSelectionType);
 
 					// Dispatch with the matched value
 					dispatch({ type: "SET_SELECTION_TYPE", payload: matchedSelectionType });

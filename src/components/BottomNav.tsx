@@ -2,11 +2,15 @@ import { useState } from "react";
 import { useSteps } from "../context/StepContext";
 import { addToCart } from "../graphql";
 
+import { useTranslation } from "react-i18next";
+
 interface BottomNavProps {
 	isNextDisabled: boolean;
 }
 
 const BottomNav: React.FC<BottomNavProps> = ({ isNextDisabled }) => {
+
+	const { t } = useTranslation();
 	const { state, dispatch } = useSteps();
 	const [progress, setProgress] = useState<number>(0);
 
@@ -37,7 +41,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ isNextDisabled }) => {
 						{state.currentStep === 9 ?
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
 								<path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-							</svg>: 'back'}
+							</svg>: t("back")}
 					</button>
 				}
 				{
@@ -47,14 +51,14 @@ const BottomNav: React.FC<BottomNavProps> = ({ isNextDisabled }) => {
 							onClick={() => addToCart(state)}
 							className="w-full border border-[#5a0616] bg-[#5a0616] text-[#f9dbb8] rounded-full py-4 px-16 capitalize font-medium ms-auto"
 						>
-							Add To Cart
+							{t("add_to_cart")}
 						</button> :
 						<button
 							disabled={isNextDisabled}
 							onClick={() => handleNavigation("increment")}
 							className="border border-[#5a0616] bg-[#5a0616] text-[#f9dbb8] rounded-full py-4 px-16 capitalize font-medium ms-auto"
 						>
-							next
+							{t("next")}
 						</button>
 				}
 			</div>

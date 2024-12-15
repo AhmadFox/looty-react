@@ -2,16 +2,16 @@ import { StepState, Action } from "../types/contexts.types";
 
 // Initial Steps Configuration
 export const initialSteps = [
-	{ title: "Delivery Method", subTitle: "Select delivery Method", isValid: false, data: null },
-	{ title: "City", subTitle: "Select delivery to location", isValid: false, data: null },
-	{ title: "Preparation", subTitle: "Preparation Type", isValid: false, data: null },
-	{ title: "Select Sandwichs", subTitle: "Choose multiple options from Sandwichs", isValid: false, data: null },
-	{ title: "Select Sandwich", subTitle: "Choose one option", isValid: false, data: null },
-	{ title: "Select Drink", subTitle: "Choose one option", isValid: false, data: null },
-	{ title: "Box Title", subTitle: "Select Title Print On The Box", isValid: true, data: null }, // Optional Step
-	{ title: "Add-Ons", subTitle: "Add Speatal your addons", isValid: true, data: null }, // Optional Step
-	{ title: "Printable Card Type", subTitle: "Select printable cards type", isValid: true, data: null }, // Optional Step
-	{ title: "Additional Information", subTitle: "Provide additional information", isValid: false, data: null },
+	{ title: "delivery_method", subTitle: "select_delivery_method", isValid: false, data: null },
+	{ title: "city", subTitle: "select_delivery_to_location", isValid: false, data: null },
+	{ title: "preparation", subTitle: "preparation_type", isValid: false, data: null },
+	{ title: "select_sandwiches", subTitle: "choose_multiple_options_from_sandwiches", isValid: false, data: null },
+	{ title: "select_sandwich", subTitle: "choose_one_option", isValid: false, data: null },
+	{ title: "select_drink", subTitle: "choose_one_option_drink", isValid: false, data: null },
+	{ title: "box_title", subTitle: "select_title_print_on_the_box", isValid: true, data: null }, // Optional Step
+	{ title: "add_ons", subTitle: "add_special_your_addons", isValid: true, data: null }, // Optional Step
+	{ title: "printable_card_type", subTitle: "select_printable_cards_type", isValid: true, data: null }, // Optional Step
+	{ title: "additional_information", subTitle: "provide_additional_information", isValid: false, data: null },
 ];
 
 // Initial State

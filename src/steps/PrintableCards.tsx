@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useSteps } from "../context/StepContext";
+import { useTranslation } from "react-i18next";
 
 const PrintableCards = () => {
+
+	const { t } = useTranslation();
 	const { state, dispatch } = useSteps();
 	const stepIndex = state.currentStep;
 
@@ -47,7 +50,7 @@ const PrintableCards = () => {
 								className="rounded-xl"
 							/>
 							<span className="absolute bottom-2 py-2 px-4 rounded-full left-1/2 block w-3/4 text-center -translate-x-1/2 bg-white text-base font-medium">
-								Max: {card.product.variants.edges[idx].node.metafields[0].value || "255"} Char
+							{t("max")}: {card.product.variants.edges[idx].node.metafields[0].value || "255"}  {t("char")}
 							</span>
 						</div>
 						<div className="flex flex-col">

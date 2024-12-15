@@ -1,10 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface DateTimeProps {
 	onDateTimeChange: (data: { deliveryDate: string; deliveryTime: string }) => void;
 }
 
 const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
+
+	const { t } = useTranslation();
 	const [formData, setFormData] = useState({
 		deliveryDate: "",
 		deliveryTime: "",
@@ -71,7 +74,7 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 		<Fragment>
 			<div className="flex flex-col gap-2">
 				<label htmlFor="deliveryDate" className="text-lg font-medium">
-					Delivery Date <span className="text-red-500">*</span>
+				{t("delivery_date")} <span className="text-red-500">*</span>
 				</label>
 				<input
 					type="date"
@@ -86,7 +89,7 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 
 			<div className="flex flex-col gap-2">
 				<label htmlFor="deliveryTime" className="text-lg font-medium">
-					Available Delivery Time <span className="text-red-500">*</span>
+				{t("available_delivery_time")} <span className="text-red-500">*</span>
 				</label>
 				<select
 					name="deliveryTime"
@@ -96,7 +99,7 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 					className="h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 				>
 					<option disabled value="">
-						Select Time
+					{t("select_time")}
 					</option>
 					{availableTimes.map((time) => {
 						const [start, end] = time.split("-").map(Number);

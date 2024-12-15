@@ -4,9 +4,11 @@ import { BoxViewProps } from "../steps/types";
 import ViewHeader from "./ViewHeader";
 import ViewHeaderLoader from "./skeleton/ViewHeaderLoader";
 import TimeLine from "./TimeLine";
+import { useTranslation } from "react-i18next";
 
 const ContainerView = () => {
 
+	const { t } = useTranslation();
 	const { state } = useSteps();
 	const [ collaps, setCollaps ] = useState(true);
 
@@ -52,7 +54,7 @@ const ContainerView = () => {
 			<div className={`sm:!block sm:!h-auto overflow-hidden h-auto ease-in-out duration-500
 				${!collaps ? 'h-0' : 'h-screen'}	
 			`}>
-				<p className="h3 text-center my-2">Order Details</p>
+				<p className="h3 text-center my-2">{t("order_details")}</p>
 				<TimeLine />
 			</div>
 		</div>

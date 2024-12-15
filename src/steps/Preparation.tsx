@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useSteps } from "../context/StepContext";
+import { useTranslation } from "react-i18next";
 
 const Preparation = () => {
 
+	const { t } = useTranslation();
 	const { state, dispatch } = useSteps();	
 
 	// Retrieve the selected city from Locations step (if applicable)
@@ -53,9 +55,10 @@ const Preparation = () => {
 							disabled={!isBakedAvailable}
 							className="absolute opacity-0 invisible -z-[1]"
 						/>
-						Baked
+						
+						{t("baked")}
 					</label>
-					<small className="text-gray-500 text-center">Ready to eat and serve</small>
+					<small className="text-gray-500 text-center">{t("ready_to_eat_and_serve")}</small>
 				</div>
 				<div className="flex flex-col gap-3">
 					<label htmlFor="Frozen" className={`
@@ -71,14 +74,14 @@ const Preparation = () => {
 							id="Frozen"
 							className="absolute opacity-0 invisible -z-[1]"
 						/>
-						Frozen
+						{t("frozen")}
 					</label>
-					<small className="text-gray-500 text-center">10 min in oven</small>
+					<small className="text-gray-500 text-center">{t("10_min_in_oven")}</small>
 				</div>
 			</div>
 			{
 				!isBakedAvailable &&
-				<p className="text-red-500 text-center text-lg">*Baked option only available in Amman city</p>
+				<p className="text-red-500 text-center text-lg">*{t("baked_option_only_available_in_amman_city")}</p>
 			}
 		</div>
 	)

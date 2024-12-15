@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSteps } from "../context/StepContext";
 import { ItemSelectionProps } from "../steps/types";
+import { useTranslation } from "react-i18next";
 
 const ItemSelection: React.FC<ItemSelectionProps> = ({
 	id,
@@ -19,6 +20,7 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 	updateTotalSelected
 }) => {
 
+	const { t } = useTranslation();
 	const { state } = useSteps();
 
 	// Retrieve the saved selection for this step
@@ -71,7 +73,7 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 				/>
 				<div className="flex flex-col gap-3">
 					<span className="text-2xl font-medium h2 text-[#202020] capitalize flex items-center gap-x-2">
-						{title}{" "} {optional && <small className="text-gray-400 font-normal text-base">(Optional)</small>}
+						{title}{" "} {optional && <small className="text-gray-400 font-normal text-base">({t("optional")})</small>}
 					</span>
 					<span className="text-blue-600 font-medium text-xl">
 						{optional && "+"}

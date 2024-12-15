@@ -1,5 +1,7 @@
 import { useSteps } from "../context/StepContext";
 
+import { useTranslation } from 'react-i18next';
+
 import StepHeader from "./StepHeader"
 import BottomNav from "./BottomNav"
 import Delevery from "../steps/Delevery"
@@ -28,6 +30,7 @@ const stepsComponents = [
 
 const ContainerOptions = () => {
 
+	const { t } = useTranslation();
 	const { state } = useSteps();
 	const CurrentStepComponent = stepsComponents[state.currentStep];
 	
@@ -35,8 +38,8 @@ const ContainerOptions = () => {
 		<div className="flex flex-col justify-between h-full w-full">
 			<div>
 				<StepHeader
-					title={state.steps[state.currentStep].title}
-					subTitle={state.steps[state.currentStep].subTitle}
+					title={t(state.steps[state.currentStep].title)}
+					subTitle={t(state.steps[state.currentStep].subTitle)}
 				/>
 				<CurrentStepComponent />
 			</div>

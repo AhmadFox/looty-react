@@ -3,9 +3,11 @@ import { useState, useEffect, useCallback } from "react";
 import SelectedPrintableCard from "../components/SelectedPrintableCard";
 import DateTime from "../components/form/DateTime";
 import PhoneNumber from "../components/form/PhoneNumber";
+import { useTranslation } from "react-i18next";
 
 const Additionaliformation = () => {
 
+	const { t } = useTranslation();
 	const { state, dispatch } = useSteps();
 	const stepIndex = state.currentStep;
 
@@ -34,12 +36,12 @@ const Additionaliformation = () => {
 		switch (name) {
 			case "senderName":
 			case "recipientName":
-				return value.length >= 3 ? "" : `${name} must be at least 3 characters long.`;
+				return value.length >= 3 ? "" : `${name === 'senderName' ? t("sender_name") : t("recipient_name")} ${t("3_characters_long")}`;
 			case "recipientAddress":
-				return value.length >= 6 ? "" : `${name} must be at least 6 characters long.`;
+				return value.length >= 6 ? "" : `${name === 'recipientAddress' && t("recipient_address")} ${t("6_characters_long")}`;
 			case "deliveryDate":
 			case "deliveryTime":
-				return value ? "" : `${name} is required.`;
+				return value ? "" : `${name === 'deliveryDate' ? t("delivery_date") : t("delivery_time")} is required.`;
 			case "recipientMobile":
 				// Mobile validation will be handled by PhoneNumber component
 				return "";
@@ -71,7 +73,7 @@ const Additionaliformation = () => {
 			...prevState,
 			recipientMobile: mobileNumber,
 		}));
-		errors.recipientMobile = valid ? "" : "Invalid mobile number.";
+		errors.recipientMobile = valid ? "" : t("invalid_mobile_number");
 		setFormErrors(errors);
 	};
 
@@ -119,7 +121,7 @@ const Additionaliformation = () => {
 			dispatch({ type: "SET_VALID", payload: false });
 		}
 
-	}, [isFormValid])
+	}, [isFormValid, formData])
 
 	return (
 		<div className="px-8 py-8 sm:px-0">
@@ -127,12 +129,12 @@ const Additionaliformation = () => {
 				<SelectedPrintableCard onChangeMessage={handelMessage} />
 
 				<div className="flex flex-col gap-2">
-					<label htmlFor="senderName" className="text-lg font-medium">Sender Name <span className="text-red-500">*</span></label>
+					<label htmlFor="senderName" className="text-lg font-medium">{t("sender_name")} <span className="text-red-500">*</span></label>
 					<input
 						type="text"
 						name="senderName"
 						id="senderName"
-						placeholder="Sender Name"
+						placeholder={t("sender_name")}
 						value={formData.senderName}
 						onChange={handleChange}
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
@@ -141,12 +143,12 @@ const Additionaliformation = () => {
 				</div>
 
 				<div className="flex flex-col gap-2">
-					<label htmlFor="recipientName" className="text-lg font-medium">Recipient Name <span className="text-red-500">*</span></label>
+					<label htmlFor="recipientName" className="text-lg font-medium">{t("recipient_name")} <span className="text-red-500">*</span></label>
 					<input
 						type="text"
 						name="recipientName"
 						id="recipientName"
-						placeholder="Recipient Name"
+						placeholder={t("recipient_name")}
 						value={formData.recipientName}
 						onChange={handleChange}
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
@@ -161,7 +163,7 @@ const Additionaliformation = () => {
 				{
 					state.steps[1].data as string &&
 					<div className="flex flex-col gap-2">
-						<label htmlFor="recipientCity" className="text-lg font-medium">Delevery to City <span className="text-red-500">*</span></label>
+						<label htmlFor="recipientCity" className="text-lg font-medium">{t("delivery_to_city")} <span className="text-red-500">*</span></label>
 						<input
 							type="text"
 							disabled
@@ -174,7 +176,7 @@ const Additionaliformation = () => {
 				}
 
 				<div className="flex flex-col gap-2 col-span-2">
-					<label htmlFor="recipientAddress" className="text-lg font-medium">Recipient Address <span className="text-red-500">*</span></label>
+					<label htmlFor="recipientAddress" className="text-lg font-medium">{t("recipient_address")} <span className="text-red-500">*</span></label>
 					<input
 						type="text"
 						name="recipientAddress"
@@ -182,7 +184,7 @@ const Additionaliformation = () => {
 						minLength={10}
 						value={formData.recipientAddress}
 						onChange={handleChange}
-						placeholder="Area, Street, Building Number, Floor, Apartment Number"
+						placeholder={t("address_placeholder")}
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 					/>
 					{formErrors.recipientAddress && <span className="text-red-500">{formErrors.recipientAddress}</span>}

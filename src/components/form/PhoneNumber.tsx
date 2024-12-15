@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSteps } from '../../context/StepContext';
+import { useTranslation } from "react-i18next";
 
 interface PhoneNumberProps {
 	onPhoneChange: (mobileNumber: string, valid: boolean) => void;
@@ -7,6 +8,7 @@ interface PhoneNumberProps {
 
 const PhoneNumber = ({ onPhoneChange }: PhoneNumberProps) => {
 
+	const { t } = useTranslation();
 	const { state } = useSteps();
 	const [value, setValue] = useState('');
 	const [isValid, setIsValid] = useState(true);
@@ -37,7 +39,7 @@ const PhoneNumber = ({ onPhoneChange }: PhoneNumberProps) => {
 		<div className={`flex flex-col gap-2
 			${(state.steps[1].data as string) ? 'col-span-1' : 'col-span-2'}
 			`}>
-			<label htmlFor="recipientMobile" className="text-lg font-medium">Recipient Mobile Number <span className="text-red-500">*</span></label>
+			<label htmlFor="recipientMobile" className="text-lg font-medium">{t("recipient_mobile_number")} <span className="text-red-500">*</span></label>
 			<input
 				type="text" // Changed to text to avoid number-specific input issues
 				name="recipientMobile"
@@ -51,8 +53,8 @@ const PhoneNumber = ({ onPhoneChange }: PhoneNumberProps) => {
 			/>
 			{!isValid && (
 				<span className="text-red-500">
-					<small className="block">Invalid Jordanian mobile number!</small>
-					<small>Should start with 75, 77, 78, or 79 and be followed by 7 digits.</small>
+					<small className="block">{t("invalid_jordanian_mobile_number")}!</small>
+					<small>{t("should_start_with_962")}</small>
 				</span>
 			)}
 		</div>

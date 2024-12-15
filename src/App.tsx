@@ -1,9 +1,14 @@
 import { StepsProvider } from "./context/StepContext";
 
+import { useTranslation } from "react-i18next";
+
 import ContainerView from "./components/ContainerView";
 import ContainerOptions from "./components/ContainerOptions";
 
 const App = () => {
+
+	const { i18n } = useTranslation();
+	i18n.changeLanguage('en');
 	return (
 		<StepsProvider
 			productHandle="single-selection"

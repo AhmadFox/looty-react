@@ -78,13 +78,29 @@ export type ProductData = {
 	variantApiId: number;
 };
 
+export type DataType = {
+	data?: string | {
+	  id: string;
+	  quantity: number;
+  }[] | {
+	  senderName: string;
+	  recipientName: string;
+	  recipientMobile: string;
+	  recipientAddress: string;
+	  deliveryTime: string;
+	  deliveryDate: string;
+	  message?: string | undefined;
+  } | undefined;
+  title: string;
+  }
+
 export type StepState = {
 	currentStep: number;
 	steps: Array<{
 		title: string;
 		subTitle: string;
 		isValid: boolean;
-		data: string | Array<{id: string; quantity: number}>;
+		data: string | Array<{id: string; quantity: number}> | null | [] | unknown;
 	}>;
 	pendingNextStep?: number;
 	history: number[];

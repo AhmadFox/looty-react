@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useSteps } from "../context/StepContext";
+import { useTranslation } from "react-i18next";
 
 interface SelectedPrintableCardProps {
 	onChangeMessage: (message: string) => void;
 }
 const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeMessage }) => {
 
+	const { t } = useTranslation();
 	const { state, dispatch } = useSteps();
+	const currency = state.fetchedData?.priceRange.minVariantPrice.currencyCode;
 	const [emptyPrintableCard, setEmptyPrintableCard] = useState(false);
 	const [messageCount, setMessageCount] = useState(0);
 
@@ -57,10 +60,10 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 						+
 					</div>
 					<div className="flex flex-col gap-1">
-						<span className="h4 text-xl">Add Printable Card?</span>
+						<span className="h4 text-xl">{t("add_printable_card")}?</span>
 						<div className="flex gap-2">
-							<span className="text-gray-600 text-lg font-medium">Start from</span>
-							<span className="text-blue-400 text-lg font-medium">+1 JOD</span>
+							<span className="text-gray-600 text-lg font-medium">{t("start_from")}</span>
+							<span className="text-blue-400 text-lg font-medium">+1 {currency}</span>
 						</div>
 					</div>
 				</button>
@@ -97,14 +100,14 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 							type="button"
 							className="text-blue-600 text-lg font-medium"
 						>
-							Change Card
+							{t("change_card")}
 						</button>
 						<button
 							onClick={handelRemoveCard}
 							type="button"
 							className="text-red-500 text-lg font-medium"
 						>
-							Remove Card
+							{t("remove_card")}
 						</button>
 					</div>
 				</div>
@@ -113,18 +116,18 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 			{/* Message Section */}
 			<div className="flex flex-col gap-2 col-span-2">
 				<label htmlFor="message" className="text-lg font-medium">
-					Message <span className="text-red-500">*</span>
+				{t("message")} <span className="text-red-500">*</span>
 				</label>
 				<textarea
 					rows={4}
 					id="message"
 					maxLength={Number(maxCharachter)}
 					onChange={messageHandler}
-					placeholder="Message on printable card"
+					placeholder={t("message_on_printable_card")}
 					className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md w-full resize-none"
 				/>
 				<div className="flex justify-end text-base">
-					<span>{messageCount}/{maxCharachter} Charachters</span>
+					<span>{messageCount}/{maxCharachter} {t("charachters")}</span>
 				</div>
 			</div>
 		</div>

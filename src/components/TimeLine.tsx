@@ -1,6 +1,7 @@
 import React from 'react';
 import TimelineNode from './TimelineNode';
 import { useSteps } from '../context/StepContext';
+import { DataType } from '../types/contexts.types';
 
 const Timeline: React.FC = () => {
   const { state } = useSteps();
@@ -14,7 +15,7 @@ const Timeline: React.FC = () => {
         key={1}
         number={1}
         isLastNode={false}
-        data={state.steps[0]}
+        data={state.steps[0] as DataType}
       />
     );
 
@@ -23,7 +24,7 @@ const Timeline: React.FC = () => {
         key={2}
         number={2}
         isLastNode={false}
-        data={state.steps[2]}
+        data={state.steps[2] as DataType}
       />
     );
 
@@ -34,7 +35,7 @@ const Timeline: React.FC = () => {
           key={3}
           number={3}
           isLastNode={false}
-          data={state.steps[3]}
+          data={state.steps[3] as DataType}
         />
       );
     } else {
@@ -43,12 +44,12 @@ const Timeline: React.FC = () => {
           <TimelineNode
             number={3}
             isLastNode={false}
-            data={state.steps[4]}
+            data={state.steps[4] as DataType}
           />
           <TimelineNode
             number={4}
             isLastNode={false}
-            data={state.steps[5]}
+            data={state.steps[5] as DataType}
           />
         </div>
       );
@@ -63,7 +64,7 @@ const Timeline: React.FC = () => {
           key={baseNumber + i}
           number={baseNumber + i}
           isLastNode={isLastNode}
-          data={state.steps[6 + i]}
+          data={state.steps[6 + i] as DataType}
         />
       );
     }

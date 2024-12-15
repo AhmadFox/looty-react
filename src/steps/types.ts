@@ -15,7 +15,7 @@ export interface TimelineNodeProps {
 		data?: string | Array<{
 			id: string; quantity: number
 		}> | {
-			senderName: string;
+				senderName: string;
 				recipientName: string;
 				recipientMobile: string;
 				recipientAddress: string;
@@ -28,6 +28,7 @@ export interface TimelineNodeProps {
 	number: number;
 	isLastNode: boolean;
 }
+  
 
 export type RadioSelectionProps = {
 	name: string;

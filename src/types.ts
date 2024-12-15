@@ -3,7 +3,6 @@ export interface Variant {
 	id: number;
 	title: string;
 	price: number;
-	// other fields for variant
   }
   
   export interface Product {
