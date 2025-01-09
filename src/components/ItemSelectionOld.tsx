@@ -6,20 +6,19 @@ import { useTranslation } from "react-i18next";
 const ItemSelection: React.FC<ItemSelectionProps> = ({
 	id,
 	title,
-	variantTitle,
 	optional,
 	price,
 	currency,
 	image,
 	type,
-	totalSelected,
 	maxQuantity,
+	totalSelected,
 	maxSelection,
 	groupQuantity,
-	cardStyle,
+	thubanailRounded,
 	stepIndex,
 	updateTotalSelected
-}) => {	
+}) => {
 
 	const { t } = useTranslation();
 	const { state } = useSteps();
@@ -70,19 +69,11 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 				<img
 					src={image}
 					alt={`item ${title} in the box`}
-					className={`w-28 md:w-32 h-28 md:h-32 object-cover bg-slate-100 ${cardStyle === 'portrait' ? 'rounded-lg' : 'rounded-full'}`}
+					className={`w-28 md:w-32 h-28 md:h-32 object-cover bg-slate-100 ${thubanailRounded}`}
 				/>
 				<div className="flex flex-col gap-3">
 					<span className="text-2xl font-medium h2 text-[#202020] capitalize flex items-center gap-x-2">
-						{
-							cardStyle !== 'portrait' ?
-							<div className="">
-								{title}{" "} {optional && <small className="text-gray-400 font-normal text-base">({t("optional")})</small>}
-							</div>:
-							<div className="">
-								{variantTitle}{" "} {optional && <small className="text-gray-400 font-normal text-base">({t("optional")})</small>}
-							</div>
-						}
+						{title}{" "} {optional && <small className="text-gray-400 font-normal text-base">({t("optional")})</small>}
 					</span>
 					<span className="text-blue-600 font-medium text-xl">
 						{optional && "+"}

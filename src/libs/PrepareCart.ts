@@ -34,7 +34,13 @@ export const PrepareCart = (state: StepState) => {
 			items.push({
 				id: item.id.replace("gid://shopify/ProductVariant/", ""),
 				quantity: item.quantity || 1,
-				properties: { _bundleId: state.fetchedData?.variantApiId, status: orderStatus },
+				// properties: { _bundleId: state.fetchedData?.variantApiId, status: orderStatus },
+				properties: { 
+					status: orderStatus,
+					_bundleId: state.fetchedData?.variantApiId,
+					_th_bundle_box: "amdyeWYzcGNLV210Z2lhbWhJSmxQZz09",
+					_th_bundle_type: "Build_box"
+				},
 			});
 		});
 
@@ -43,12 +49,24 @@ export const PrepareCart = (state: StepState) => {
 			{
 				id: itemSingleSelection1[0].id.replace("gid://shopify/ProductVariant/", ""),
 				quantity: itemSingleSelection1[0].quantity || 1,
-				properties: { _bundleId: state.fetchedData?.variantApiId, status: orderStatus },
+				// properties: { _bundleId: state.fetchedData?.variantApiId, status: orderStatus },
+				properties: { 
+					status: orderStatus,
+					_bundleId: state.fetchedData?.variantApiId,
+					_th_bundle_box: "amdyeWYzcGNLV210Z2lhbWhJSmxQZz09",
+					_th_bundle_type: "Build_box"
+				},
 			},
 			{
 				id: itemSingleSelection2[0].id.replace("gid://shopify/ProductVariant/", ""),
 				quantity: itemSingleSelection2[0].quantity || 1,
-				properties: { _bundleId: state.fetchedData?.variantApiId, status: orderStatus },
+				// properties: { _bundleId: state.fetchedData?.variantApiId, status: orderStatus },
+				properties: { 
+					status: orderStatus,
+					_bundleId: state.fetchedData?.variantApiId,
+					_th_bundle_box: "amdyeWYzcGNLV210Z2lhbWhJSmxQZz09",
+					_th_bundle_type: "Build_box"
+				},
 			},
 		)
 	}
@@ -58,7 +76,13 @@ export const PrepareCart = (state: StepState) => {
 			items.push({
 				id: addon.id.replace("gid://shopify/ProductVariant/", ""),
 				quantity: addon.quantity || 1,
-				properties: { _bundleId: state.fetchedData?.variantApiId },
+				// properties: { _bundleId: state.fetchedData?.variantApiId },
+				properties: { 
+					status: orderStatus,
+					_bundleId: state.fetchedData?.variantApiId,
+					_th_bundle_box: "amdyeWYzcGNLV210Z2lhbWhJSmxQZz09",
+					_th_bundle_type: "Build_box"
+				},
 			});
 		});
 	}
@@ -69,7 +93,14 @@ export const PrepareCart = (state: StepState) => {
 			items.push({
 				id: card.id.replace("gid://shopify/ProductVariant/", ""),
 				quantity: card.quantity || 1,
-				properties: { _bundleId: state.fetchedData?.variantApiId, message: cardMessage },
+				// properties: { _bundleId: state.fetchedData?.variantApiId, message: cardMessage },
+				properties: { 
+					status: orderStatus,
+					_bundleId: state.fetchedData?.variantApiId,
+					_th_bundle_box: "amdyeWYzcGNLV210Z2lhbWhJSmxQZz09",
+					_th_bundle_type: "Build_box",
+					message: cardMessage 
+				},
 			});
 		});
 	}

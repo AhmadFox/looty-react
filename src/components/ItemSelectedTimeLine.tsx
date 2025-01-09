@@ -7,7 +7,9 @@ type ItemSelectedTimeLineProps = {
 }
 
 const ItemSelectedTimeLine: React.FC<ItemSelectedTimeLineProps> = ({ id, quantity }) => {
-
+	// console.log('item vew Log ====>', id);
+	// console.log('item vew Log ====>', quantity);
+	
 	const { state } = useSteps();
 	const [ itemData, setItemData ] = useState({
 		image: '',

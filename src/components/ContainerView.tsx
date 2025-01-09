@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSteps } from "../context/StepContext";
 import { BoxViewProps } from "../steps/types";
 import ViewHeader from "./ViewHeader";
@@ -10,11 +10,25 @@ const ContainerView = () => {
 
 	const { t } = useTranslation();
 	const { state } = useSteps();
-	const [ collaps, setCollaps ] = useState(true);
-
-
 	const productData = state.fetchedData as BoxViewProps | null;
-	
+	const [collaps, setCollaps] = useState(false);
+
+	const toggleOrederView = () => {
+		setCollaps(!collaps);
+
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth', // This creates a smooth scrolling effect
+		});
+	}
+
+	useEffect(() => {
+		const htmlBody = document.querySelector('html');
+		if (htmlBody) {
+			htmlBody.style.overflow = collaps ? 'hidden' : 'auto';
+		}
+	}, [collaps]);
+
 	return (
 		<div
 			style={{ height: collaps ? '100vh' : '180px' }}
@@ -30,31 +44,31 @@ const ContainerView = () => {
 						<ViewHeaderLoader />
 				}
 				<button
-					onClick={() => setCollaps(!collaps)}
+					onClick={toggleOrederView}
 					className="fixed p-3 flex justify-center items-center rounded-full bg-white z-[10] end-[2.5rem] top-[18rem] sm:hidden"
 				>
 					{
-						collaps ? 
+						collaps ?
 							<div className="">
 								<span className="sr-only">Collaps Summary</span>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} className="size-7 stroke-red-800">
 									<path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
 								</svg>
-							</div>:
+							</div> :
 							<div className="">
 								<span className="sr-only">Expand Summary</span>
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} className="size-7 stroke-red-800">
 									<path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 								</svg>
 							</div>
-							
+
 					}
 				</button>
 			</div>
 			<div className={`sm:!block sm:!h-auto overflow-hidden h-auto ease-in-out duration-500
-				${!collaps ? 'h-0' : 'h-screen'}	
+				${!collaps ? 'h-0 overflow-hidden' : 'h-screen overflow-y-auto mb-12'}	
 			`}>
-				<p className="h3 text-center my-2">{t("order_details")}</p>
+				<p className="h3 text-center mt-4 sm:mt-12 mb-2">{t("order_details")}</p>
 				<TimeLine />
 			</div>
 		</div>

@@ -37,11 +37,11 @@ const PhoneNumber = ({ onPhoneChange }: PhoneNumberProps) => {
 
 	return (
 		<div className={`flex flex-col gap-2
-			${(state.steps[1].data as string) ? 'col-span-1' : 'col-span-2'}
+			${(state.steps[1].data as string) ? 'col-span-2 sm:col-span-1' : 'col-span-2'}
 			`}>
 			<label htmlFor="recipientMobile" className="text-lg font-medium">{t("recipient_mobile_number")} <span className="text-red-500">*</span></label>
 			<input
-				type="text" // Changed to text to avoid number-specific input issues
+				type="number" // Changed to text to avoid number-specific input issues
 				name="recipientMobile"
 				id="recipientMobile"
 				value={value}
@@ -52,7 +52,7 @@ const PhoneNumber = ({ onPhoneChange }: PhoneNumberProps) => {
 				}`}
 			/>
 			{!isValid && (
-				<span className="text-red-500">
+				<span className="text-red-500 mt-2">
 					<small className="block">{t("invalid_jordanian_mobile_number")}!</small>
 					<small>{t("should_start_with_962")}</small>
 				</span>

@@ -1,10 +1,21 @@
-import productFragment from '../fragments/product';
+import { bundleFragment, variantsFragment } from '../fragments/product';
 
-export const getProductQuery = /* GraphQL */ `
-  query getProduct($handle: String!) {
+export const getbundleQuery = /* GraphQL */ `
+  query getBundle($handle: String!) {
     product(handle: $handle) {
-      ...product
+      ...bundle
     }
   }
-  ${productFragment}
+  ${bundleFragment}
+`;
+
+export const getVariantsQuery = /* GraphQL */ `
+  query getVariants($ids: [ID!]!) {
+    nodes(ids: $ids) {
+      ... on Product {
+        ...variants
+      }
+    }
+  }
+  ${variantsFragment}
 `;

@@ -6,7 +6,6 @@ interface DateTimeProps {
 }
 
 const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
-
 	const { t } = useTranslation();
 	const [formData, setFormData] = useState({
 		deliveryDate: "",
@@ -15,7 +14,7 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 	const [availableTimes, setAvailableTimes] = useState<string[]>([]);
 
 	const date = new Date();
-	const today = date.toISOString().split("T")[0];
+	const today = date.toLocaleDateString("en-CA");
 
 	// Predefined time slots
 	const timeSlots = [
@@ -54,25 +53,22 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 		const currentHour = new Date().getHours();
 		const selectedDate = formData.deliveryDate;
 
-		// If the selected date is today, filter past time slots
 		if (selectedDate === today) {
+			// Filter out past time slots if the selected date is today
 			setAvailableTimes(
 				timeSlots
 					.filter((slot) => slot.start > currentHour) // Only include future time slots
 					.map((slot) => slot.value)
 			);
 		} else if (selectedDate) {
-			// If a future date is selected, include all time slots
+			// For future dates, all time slots should be available
 			setAvailableTimes(timeSlots.map((slot) => slot.value));
-		} else {
-			// Default state when no date is selected
-			setAvailableTimes([]);
 		}
-	}, [formData.deliveryDate]);
+	}, [formData.deliveryDate]); // Only re-run this effect when the deliveryDate changes
 
 	return (
 		<Fragment>
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
 				<label htmlFor="deliveryDate" className="text-lg font-medium">
 				{t("delivery_date")} <span className="text-red-500">*</span>
 				</label>
@@ -83,11 +79,11 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 					value={formData.deliveryDate}
 					min={today}
 					onChange={handleChange}
-					className="h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
+					className="h-[37px] sm:h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md w-full"
 				/>
 			</div>
 
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
 				<label htmlFor="deliveryTime" className="text-lg font-medium">
 				{t("available_delivery_time")} <span className="text-red-500">*</span>
 				</label>
@@ -96,16 +92,19 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 					id="deliveryTime"
 					value={formData.deliveryTime}
 					onChange={handleChange}
-					className="h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
+					disabled={!formData.deliveryDate}
+					className="h-[37px] sm:h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 				>
 					<option disabled value="">
 					{t("select_time")}
 					</option>
-					{availableTimes.map((time) => {
-						const [start, end] = time.split("-").map(Number);
+					{/* Render available times with formatted strings */}
+					{availableTimes.map((timeSlot) => {
+						// Find the corresponding time slot object
+						const slot = timeSlots.find((slot) => slot.value === timeSlot);
 						return (
-							<option key={time} value={time}>
-								{getFormattedTimeSlot(start, end)}
+							<option key={timeSlot} value={timeSlot}>
+								{slot ? getFormattedTimeSlot(slot.start, slot.end) : timeSlot}
 							</option>
 						);
 					})}

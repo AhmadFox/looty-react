@@ -5,12 +5,7 @@ export const initialSteps = [
 	{ title: "delivery_method", subTitle: "select_delivery_method", isValid: false, data: null },
 	{ title: "city", subTitle: "select_delivery_to_location", isValid: false, data: null },
 	{ title: "preparation", subTitle: "preparation_type", isValid: false, data: null },
-	{ title: "select_sandwiches", subTitle: "choose_multiple_options_from_sandwiches", isValid: false, data: null },
-	{ title: "select_sandwich", subTitle: "choose_one_option", isValid: false, data: null },
-	{ title: "select_drink", subTitle: "choose_one_option_drink", isValid: false, data: null },
 	{ title: "box_title", subTitle: "select_title_print_on_the_box", isValid: true, data: null }, // Optional Step
-	{ title: "add_ons", subTitle: "add_special_your_addons", isValid: true, data: null }, // Optional Step
-	{ title: "printable_card_type", subTitle: "select_printable_cards_type", isValid: true, data: null }, // Optional Step
 	{ title: "additional_information", subTitle: "provide_additional_information", isValid: false, data: null },
 ];
 
@@ -63,10 +58,29 @@ export const stepsReducer = (state: StepState, action: Action): StepState => {
 			return { ...state, pendingNextStep: action.payload };
 
 		case "SET_FETCHED_DATA":
-			if (!action.payload || typeof action.payload !== "object") {
+			{ if (!action.payload || typeof action.payload !== "object") {
 				throw new Error("Invalid fetched data payload");
 			}
-			return { ...state, fetchedData: action.payload };
+			
+			const dynamicSteps = action.payload.variants
+			?.filter((field) => field?.key && field.key.startsWith("step_settings_")) // Ensure field and key are not null
+			.map((field) => {
+				const stepData = JSON.parse(field.value); // Parse JSON string from API
+				return {
+				title: stepData.title, // Dynamic step title
+				subTitle: stepData.description, // Dynamic step description
+				isValid: true, // Default validity
+				data: null, // Default data
+				};
+			})
+
+			const updatedSteps = [
+			...initialSteps.slice(0, 3), // Static steps: Delevery, Locations, Preparation
+			...(dynamicSteps || []), // Add dynamic steps, fallback to empty array if none
+			...initialSteps.slice(3), // Static steps: BoxTitle, AdditionalInformation
+			]
+
+			return { ...state, fetchedData: action.payload, steps: updatedSteps, }; }
 			
 
 		case "SET_SELECTION_TYPE":

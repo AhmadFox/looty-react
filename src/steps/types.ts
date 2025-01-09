@@ -44,6 +44,7 @@ export type RadioSelectionProps = {
 export type ItemSelectionProps = {
 	id: string;
 	title: string;
+	variantTitle: string;
 	optional?: boolean;
 	price?: string;
 	currency?: string;
@@ -53,6 +54,7 @@ export type ItemSelectionProps = {
 	totalSelected: number;
 	maxSelection: number;
 	groupQuantity: number;
+	cardStyle: string;
 	thubanailRounded?: string;
 	stepIndex: number;
 	updateTotalSelected: (change: { id: string; quantity: number }) => void; // Updated type

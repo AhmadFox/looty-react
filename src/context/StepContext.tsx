@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useContext, useEffect } from "react";
 import { initialState, stepsReducer } from "./StepReducer";
-import { getProduct } from "../graphql";
+import { getBundle } from "../graphql";
 import { StepState, Action, ProductData } from "../types/contexts.types";
 
 // Create Context
@@ -11,46 +11,42 @@ const StepsContext = createContext<{
 
 // StepsProvider Component
 export const StepsProvider: React.FC<
-	React.PropsWithChildren<{ productHandle: string, variantApiId: number }>
-> = ({ children, productHandle, variantApiId }) => {
+	React.PropsWithChildren<{ productHandle: string, variantApiId: number, language: string }>
+> = ({ children, productHandle, variantApiId, language }) => {
 	const [state, dispatch] = useReducer(stepsReducer, initialState);
 
-	// Fetch product data
+	// Fetch Bundle Data
 	useEffect(() => {
 		const fetchProduct = async () => {
 			try {
-				const productData = await getProduct(productHandle);				
-				if (productData) {
+				const bundleData = await getBundle(productHandle, language);
+				if (bundleData) {
 					// Map `Product` to `ProductData` type
 					const productDataFormatted: ProductData = {
-						featuredImage: productData.featuredImage,
-						images: productData.images,
-						title: productData.title,
-						tags: productData.tags as [],
-						updatedAt: productData.updatedAt,
-						variants: productData.variants as [],
-						seo: productData?.seo || {},
-						priceRange: productData.priceRange,
-						options: productData.options,
-						metafields: productData.metafields as [],
-						variantApiId: variantApiId as number
+						id: bundleData.id,
+						title: bundleData.title,
+						featuredImage: bundleData.featuredImage,
+						tags: bundleData.tags as [],
+						seo: bundleData?.seo || {},
+						priceRange: bundleData.priceRange,
+						metafields: bundleData.metafields as [],
+						variants: bundleData.variants as [],
+						variantApiId: variantApiId as number,
+						productId: Number(bundleData.id)
 
 					};
+
 					dispatch({
 						type: "SET_FETCHED_DATA",
 						payload: productDataFormatted,
 					});
 
-					const selectionType = productData.tags;
-					console.log('selectionType', selectionType);
-					
+					const selectionType = bundleData.tags;					
 					const validSelectionTypes = ["multi-selection", "single-selection", "group-selection"] as const;
 
 					const matchedSelectionType = selectionType?.find((tag) =>
 					validSelectionTypes.includes(tag as typeof validSelectionTypes[number])
 					) as typeof validSelectionTypes[number] | null;
-
-					console.log('matchedSelectionType', matchedSelectionType);
 
 					// Dispatch with the matched value
 					dispatch({ type: "SET_SELECTION_TYPE", payload: matchedSelectionType });

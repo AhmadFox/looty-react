@@ -28,43 +28,33 @@ const Timeline: React.FC = () => {
       />
     );
 
-    // Conditional Nodes
-    if (state.selectionType === 'multi-selection' || state.selectionType === 'group-selection') {
-      nodes.push(
-        <TimelineNode
-          key={3}
-          number={3}
-          isLastNode={false}
-          data={state.steps[3] as DataType}
-        />
-      );
-    } else {
-      nodes.push(
-        <div key="conditional-group">
-          <TimelineNode
-            number={3}
-            isLastNode={false}
-            data={state.steps[4] as DataType}
-          />
-          <TimelineNode
-            number={4}
-            isLastNode={false}
-            data={state.steps[5] as DataType}
-          />
-        </div>
-      );
-    }
+    nodes.push(
+      <TimelineNode
+        key={3}
+        number={3}
+        isLastNode={false}
+        data={state.steps[3] as DataType}
+      />
+    );
+
+    nodes.push(
+      <TimelineNode
+        key={4}
+        number={4}
+        isLastNode={false}
+        data={state.steps[4] as DataType}
+      />
+    );
 
     // Remaining Nodes
-    const baseNumber = state.selectionType === 'multi-selection' ? 4 : 5;
     for (let i = 0; i < 4; i++) {
       const isLastNode = i === 3; // Last node in the sequence
       nodes.push(
         <TimelineNode
-          key={baseNumber + i}
-          number={baseNumber + i}
+          key={3 + i}
+          number={3 + i}
           isLastNode={isLastNode}
-          data={state.steps[6 + i] as DataType}
+          data={state.steps[5 + i] as DataType}
         />
       );
     }
@@ -74,9 +64,7 @@ const Timeline: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="max-w-3xl mx-auto">
-        {generateNodes()}
-      </div>
+      {generateNodes()}
     </div>
   );
 };

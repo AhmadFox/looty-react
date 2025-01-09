@@ -8,6 +8,7 @@ interface BottomNavProps {
 	isNextDisabled: boolean;
 }
 
+
 const BottomNav: React.FC<BottomNavProps> = ({ isNextDisabled }) => {
 
 	const { t } = useTranslation();
@@ -16,20 +17,26 @@ const BottomNav: React.FC<BottomNavProps> = ({ isNextDisabled }) => {
 
 	// handle navigation (next/back) with set progress bar percentage
 	const handleNavigation = (status: "increment" | "decrement") => {
+		
 		const adjustment = status === "increment" ? 10 : -10;
 		setProgress((prev) => Math.min(100, Math.max(0, prev + adjustment)));
 
-		if (status === "increment") {
+		if (status === "increment" && state.currentStep < state.steps.length - 1) {
 			dispatch({ type: "NEXT_STEP" });
 		} else {
 			dispatch({ type: "PREVIOUS_STEP" });
 		}
+
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth', // This creates a smooth scrolling effect
+		});
 	};
 
 	return (
 		<nav className="bg-[#f9dbb8] sm:bg-white sticky bottom-0">
 			<div className="relative w-full bg-[#5a0616] bg-opacity-30 h-[4px] block sm:hidden">
-				<span className="absolute bg-[#5a0616] top-0 left-0 h-full z-10 ease-in-out duration-300" style={{ width: `${progress}%` }}></span>
+				<span className="absolute bg-[#5a0616] top-0 start-0 h-full z-10 ease-in-out duration-300" style={{ width: `${progress}%` }}></span>
 			</div>
 			<div className="py-4 px-9 sm:px-0 md:pb-16 flex justify-between items-center gap-4">
 				{

@@ -1,13 +1,15 @@
 import seoFragment from './seo';
-import imageFragment from './image';
 
-const productFragment = /* GraphQL */ `
-	fragment product on Product {
+export const bundleFragment = /* GraphQL */ `
+	fragment bundle on Product {
+		id
 		title
-		options {
-			id
-			name
-			values
+		tags
+		featuredImage {
+			url
+		}
+		seo {
+			...seo
 		}
 		priceRange {
 			maxVariantPrice {
@@ -19,99 +21,59 @@ const productFragment = /* GraphQL */ `
 				currencyCode
 			}
 		}
-		variants(first: 1) {
-			edges {
-				node {
-					id
-					title
-					availableForSale
-					selectedOptions {
-						name
-						value
-					}
-					price {
-						amount
-						currencyCode
-					}
-					image {
-						...image
-					}
+		metafields(
+			identifiers: [
+				{key: "box_title", namespace: "custom"},
+				{key: "cities_and_preparation", namespace: "custom"}
+			]
+		) {
+			key
+			type
+			value
+		}
+		variants(first: 10) {
+			nodes {
+				metafields(
+					identifiers: [
+						{ key: "step_settings_1", namespace: "app--53335195649--biscuits_app" }
+						{ key: "products_list_1", namespace: "app--53335195649--biscuits_app" }
+						{ key: "step_settings_2", namespace: "app--53335195649--biscuits_app" }
+						{ key: "products_list_2", namespace: "app--53335195649--biscuits_app" }
+						{ key: "step_settings_3", namespace: "app--53335195649--biscuits_app" }
+						{ key: "products_list_3", namespace: "app--53335195649--biscuits_app" }
+						{ key: "step_settings_4", namespace: "app--53335195649--biscuits_app" }
+						{ key: "products_list_4", namespace: "app--53335195649--biscuits_app" }
+						{ key: "step_settings_5", namespace: "app--53335195649--biscuits_app" }
+						{ key: "products_list_5", namespace: "app--53335195649--biscuits_app" }
+
+					]
+				)
+				{
+					key
+					type
+					value
 				}
 			}
+		}
+	}
+	${seoFragment}
+`;
+
+export const variantsFragment = /* GraphQL */ `
+	fragment variants on Product {
+		title
+		variants(first: 100) {
 			nodes {
+				title
 				price {
 					amount
 					currencyCode
 				}
-				metafields(
-					identifiers: [
-					{ key: "box_title", namespace: "custom" },
-					{ key: "component_group_1", namespace: "custom" },
-					{ key: "component_group_1_items_count", namespace: "custom" },
-					{ key: "component_group_1_items_count_group", namespace: "custom" },
-					{ key: "component_group_2", namespace: "custom" },
-					{ key: "component_addons_1", namespace: "custom" },
-					{ key: "component_addons_1_maximum", namespace: "custom" },
-					{ key: "component_addons_2", namespace: "custom" },
-					{ key: "component_addons_2_max_characters", namespace: "custom" },
-					{ key: "available_in_cities", namespace: "custom" },
-					]
-				) {
-					value
-					references(first: 10) {
-					nodes {
-						... on ProductVariant {
-							id
-							product {
-							title
-							variants(first: 10) {
-								edges {
-									node {
-										id
-										title
-										availableForSale
-										metafields(
-											identifiers: { key: "component_addons_2_max_characters", namespace: "custom" }
-										) {
-											value
-										}
-									}
-								}
-							}
-							}
-							price {
-							amount
-							currencyCode
-							}
-							image {
-							url
-							}
-						}
-					}
-					}
-					key
-					type
+				id
+				image {
+					url
 				}
 			}
 		}
-		featuredImage {
-			...image
-		}
-		images(first: 20) {
-			edges {
-				node {
-					...image
-				}
-			}
-		}
-		seo {
-			...seo
-		}
-		tags
-		updatedAt
 	}
-	${imageFragment}
-	${seoFragment}
 `;
-
-export default productFragment;

@@ -16,9 +16,12 @@ const Locations = () => {
 
 	const cities = JSON.parse(
 		state.fetchedData?.metafields
-		  ?.find((field) => field?.key === 'available_in_cities')
-		  ?.value || '[]'
-	  );	
+			?.find((field) => field?.key === 'cities_and_preparation')
+			?.value || '[]'
+	);
+
+	// console.log('cities ==>', cities);
+	
 
 	const handleOptionChange = (id: string) => {		
 		// Save the selected option

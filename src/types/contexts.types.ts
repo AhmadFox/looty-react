@@ -1,17 +1,18 @@
-import { ProductOption } from "../graphql/types";
+// import { ProductOption } from "../graphql/types";
 
 export type ProductData = {
+	id: string;
 	title: string;
 	featuredImage: {
 		url: string;
 	};
-	images: Array<{
-		url: string;
-		altText: string;
-		width: number;
-		height: number;
-	}>;
-	updatedAt: string;
+	// images: Array<{
+	// 	url: string;
+	// 	altText: string;
+	// 	width: number;
+	// 	height: number;
+	// }>;
+	// updatedAt: string;
 	tags: Array<{
 		key: number | null;
 		value: string | null;
@@ -27,11 +28,15 @@ export type ProductData = {
 			currencyCode: string;
 		};
 	};
-	options: ProductOption[];
+	// options: ProductOption[];
 	variants: Array<{
+		key: string;
+		type: string;
+		value: string;
 		price: { amount: string; currencyCode: string };
 		metafields: Array<{
 			key: string;
+			type: string;
 			value: string | null;
 			references?: {
 				nodes: Array<{
@@ -76,6 +81,7 @@ export type ProductData = {
 		}
 	}>;
 	variantApiId: number;
+	productId: number;
 };
 
 export type DataType = {

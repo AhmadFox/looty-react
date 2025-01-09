@@ -18,11 +18,16 @@ export type Image = {
 	height: number;
 };
 
-export type Product = Omit<ShopifyProduct, 'variants' | 'images' | 'metafields'> & {
-	images: Image[];
-	variants: ProductVariant[];
+export type Bundle = Omit<ShopifyProduct, 'variants' | 'metafields'> & {
 	metafields: Metafields[];
+	variants: Variants;
 };
+
+export type VariantsCall = {
+	ids: []
+};
+
+
 
 export type ShopifyProductOperation = {
 	data: { product: ShopifyProduct };
@@ -49,24 +54,26 @@ export type ProductVariant = {
 	metafields: Metafields
 };
 
-export type Metafields = {
-	metafields: Array<{
-		key: string;
-		value: string | null;
-		references?: {
-			nodes: Array<{
-				id: string;
-				product: { title: string };
-				price: { amount: string; currencyCode: string };
-				image: { url: string };
-			}>;
-		};
-	}>;
-}
+export type Metafields = Array<{
+	key: string;
+	type: string;
+	value: string | null;
+	references?: {
+		nodes: Array<{
+			id: string;
+			product: { title: string };
+			price: { amount: string; currencyCode: string };
+			image: { url: string };
+		}>;
+	};
+}>;
+
+
 
 export type ShopifyProduct = {
 	id: string;
 	handle: string;
+	ids?: [];
 	availableForSale: boolean;
 	title: string;
 	description: string;
@@ -76,7 +83,16 @@ export type ShopifyProduct = {
 		maxVariantPrice: Money;
 		minVariantPrice: Money;
 	};
-	variants: Connection<ProductVariant>;
+	metafields: Metafields[];
+	// variants: Connection<ProductVariant>;
+	variants: Connection<{
+		metafields: Metafield[]; // Aligns with how `getBundle` processes `metafields`
+		price?: {
+			amount: string;
+			currencyCode: string;
+		};
+		id?: string;
+	}>;
 	featuredImage: Image;
 	images: Connection<Image>;
 	tags: string[];
@@ -86,8 +102,17 @@ export type ShopifyProduct = {
 
 export interface Metafield {
 	key: string;
+	type: string;
 	value: string | null;
 }
+
+export type Variants = Array<{
+	price?: {
+		amount: string;
+		currencyCode: string;
+	};
+	metafields: Metafield[];
+}> | Metafield[];
 
 export interface ProductData {
 	title: string;

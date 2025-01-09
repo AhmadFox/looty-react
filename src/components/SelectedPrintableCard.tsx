@@ -49,7 +49,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 
 	if (!selectableCard || emptyPrintableCard) {
 		return (
-			<div className="col-span-2 mb-2">
+			<div className="col-span-2 my-2 sm:mt-4">
 				{/* Add Printable Card Button */}
 				<button
 					type="button"

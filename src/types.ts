@@ -3,9 +3,9 @@ export interface Variant {
 	id: number;
 	title: string;
 	price: number;
-  }
-  
-  export interface Product {
+}
+
+export interface Product {
 	id: number;
 	title: string;
 	handle: string;
@@ -15,5 +15,4 @@ export interface Variant {
 	price: number;
 	featured_image: string;
 	variants: Variant[]; // make variants optional if it's not always present
-  }
-  
+}

@@ -27,7 +27,7 @@ const PrintableCards = () => {
 
 		// Mark the step as valid
 		dispatch({ type: "SET_VALID", payload: true });
-		dispatch({ type: "SET_PENDING_NEXT_STEP", payload: stepIndex + 1 });
+		// dispatch({ type: "SET_PENDING_NEXT_STEP", payload: stepIndex + 1 });
 	};
 
 	return (

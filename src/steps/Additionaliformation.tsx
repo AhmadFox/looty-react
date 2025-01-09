@@ -128,7 +128,7 @@ const Additionaliformation = () => {
 			<form action="" className="grid grid-cols-2 gap-4">
 				<SelectedPrintableCard onChangeMessage={handelMessage} />
 
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
 					<label htmlFor="senderName" className="text-lg font-medium">{t("sender_name")} <span className="text-red-500">*</span></label>
 					<input
 						type="text"
@@ -139,10 +139,10 @@ const Additionaliformation = () => {
 						onChange={handleChange}
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 					/>
-					{formErrors.senderName && <span className="text-red-500">{formErrors.senderName}</span>}
+					{formErrors.senderName && <small className="text-red-500">{formErrors.senderName}</small>}
 				</div>
 
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
 					<label htmlFor="recipientName" className="text-lg font-medium">{t("recipient_name")} <span className="text-red-500">*</span></label>
 					<input
 						type="text"
@@ -153,7 +153,7 @@ const Additionaliformation = () => {
 						onChange={handleChange}
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 					/>
-					{formErrors.recipientName && <span className="text-red-500">{formErrors.recipientName}</span>}
+					{formErrors.recipientName && <small className="text-red-500">{formErrors.recipientName}</small>}
 				</div>
 
 				<DateTime onDateTimeChange={handleDateTimeChange} />
@@ -162,7 +162,7 @@ const Additionaliformation = () => {
 				
 				{
 					state.steps[1].data as string &&
-					<div className="flex flex-col gap-2">
+					<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
 						<label htmlFor="recipientCity" className="text-lg font-medium">{t("delivery_to_city")} <span className="text-red-500">*</span></label>
 						<input
 							type="text"
@@ -187,7 +187,7 @@ const Additionaliformation = () => {
 						placeholder={t("address_placeholder")}
 						className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
 					/>
-					{formErrors.recipientAddress && <span className="text-red-500">{formErrors.recipientAddress}</span>}
+					{formErrors.recipientAddress && <small className="text-red-500">{formErrors.recipientAddress}</small>}
 				</div>
 			</form>
 		</div>

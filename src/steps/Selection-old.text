@@ -1,0 +1,219 @@
+import { useEffect, useState } from "react";
+import { useSteps } from "../context/StepContext";
+import { getVariants } from "../graphql";
+import { ChangeType } from "./types";
+import ItemSelection from "../components/ItemSelection";
+import ItemSelectionLoader from "../components/skeleton/ItemSelectionLoader";
+
+type TargetVariant = {
+	title: string;
+	description: string;
+	quantity_increment: number;
+	required: string;
+	selection_type: string;
+	maximum_quantity: number;
+	minimum_quantity: number;
+	maximum_selectable: number;
+	variants: string[];
+	variants_unavailable: string[];
+	card_style: string;
+};
+
+type Variant = {
+	key: string;
+	type: string;
+	value: string;
+};
+
+type ProductVariant = {
+	id: string;
+	title: string;
+	image: { url: string };
+	price: { amount: string; currencyCode: string };
+};
+
+type Product = {
+	id: string;
+	title: string;
+	tags: [];
+	variants: { nodes: ProductVariant[] };
+};
+
+const Selection = () => {
+	
+	const { state, dispatch } = useSteps();
+	const [ selectionType, setSelectionType ] = useState("");
+	const [generalProducts, setGeneralProducts] = useState<Product[]>([]);
+	const [productsVariant, setProductsVariant] = useState<Product[]>([]);
+	
+	// Retrieve the saved selection for the current step
+	const savedSelection = (state.steps[state.currentStep]?.data as Array<{ id: string; quantity: number }>) || [];
+
+	// Initialize totalSelected from savedSelection
+	const [totalSelected, setTotalSelected] = useState(() => savedSelection.reduce((sum, item) => sum + item.quantity, 0));
+	const [selections, setSelections] = useState<ChangeType[]>(savedSelection);
+
+	// Get current step data products
+	const variantKeyIndex = state.currentStep - 2;
+
+	// Safely access fetched data
+	const variants: Variant[] = state.fetchedData?.variants || [];
+	const targetVariantSettings = variants.find(
+		(item) => item.key === `step_settings_${variantKeyIndex}`
+	);
+	const targetVariantProducts = variants.find(
+		(item) => item.key === `products_list_${variantKeyIndex}`
+	);
+
+	if (!targetVariantSettings || !targetVariantProducts) {
+		console.error("Missing target variant settings or products.");
+		return '>Error loading step data.';
+	}
+
+	// Parse JSON safely
+	const targetVariantSettingsJson: TargetVariant = JSON.parse(
+		targetVariantSettings.value
+	);
+
+	console.log('targetVariantSettingsJson', targetVariantSettingsJson);
+	
+
+	const targetVariantProductsJson: string[] = JSON.parse(
+		targetVariantProducts.value
+	);
+
+	// Function to filter response based on targetVariantIds
+	const filterVariants = (response: Product[], targetVariantIds: string[]) => {
+		return response
+			.map((product) => {
+				const filteredNodes = product.variants.nodes.filter((node) => {
+					const variantId = node.id.split("/").pop();
+					return targetVariantIds.includes(variantId || "");
+				});
+
+				if (filteredNodes) {
+					return {
+						...product,
+						variants: {
+							nodes: filteredNodes,
+						},
+					};
+				}
+				return null;
+			})
+			.filter((product): product is Product => product !== null);
+	};
+
+	const updateTotalSelected = (change: ChangeType) => {
+
+		console.log('[[[[[[[[[[[[[[[[selectionType', selectionType);
+		
+
+		if( selectionType === 'multi-selection' ) {
+			
+			setTotalSelected((prev) =>
+				Math.min(targetVariantSettingsJson.maximum_selectable, Math.max(0, prev + change.quantity))
+			);
+	
+			setSelections((prevSelections) => {
+				const existingIndex = prevSelections.findIndex((item) => item.id === change.id);
+				const updatedSelections = [...prevSelections];
+	
+				if (existingIndex >= 0) {
+					// Update existing item
+					const updatedItem = { ...updatedSelections[existingIndex] };
+					updatedItem.quantity += change.quantity;
+	
+					if (updatedItem.quantity > 0) {
+						updatedSelections[existingIndex] = updatedItem;
+					} else {
+						// Remove item if quantity becomes 0 or less
+						updatedSelections.splice(existingIndex, 1);
+					}
+				} else if (change.quantity > 0) {
+					// Add new item if quantity is positive
+					updatedSelections.push(change);
+				}
+	
+				return updatedSelections;
+			});
+
+		} else {
+
+			setTotalSelected(1);
+			setSelections([change]);
+
+		}
+		
+	};
+
+	// Fetch data products for the current step
+	useEffect(() => {
+
+		// Check if step has item selected or is it optional step
+		const validNavigation = ((targetVariantSettingsJson.required === '0' ? true : false) || (state.steps[state.currentStep].data ? true : false))
+
+		dispatch({
+			type: "SET_VALID",
+			payload: validNavigation
+		});
+
+
+		setSelections([]);
+		setTotalSelected(savedSelection.reduce((sum, item) => sum + item.quantity, 0))
+
+	}, [variantKeyIndex]);
+
+	useEffect(() => {
+		if (generalProducts.length > 0) {
+			const filteredProductsVariants = filterVariants(
+				generalProducts,
+				targetVariantSettingsJson.variants
+			);
+			setProductsVariant(filteredProductsVariants);
+			setSelectionType(targetVariantSettingsJson.selection_type === 's' ? "single-selection" : 'multi-selection')
+		}
+		console.log('<=== totalSelected ===>',totalSelected);
+
+	}, [generalProducts, variantKeyIndex]);
+
+	useEffect(() => {
+
+		console.log(']]]]]]]]]]]]]] selection', selections);
+		
+
+		if( selections.length > 0 ) {
+			
+			dispatch({
+				type: "SET_STEP_DATA",
+				payload: {
+					stepIndex: state.currentStep,
+					data: selections,
+				},
+			});
+	
+			// Mark the step as valid
+			if ( targetVariantSettingsJson.required === '0' ) {
+				dispatch({ type: "SET_VALID", payload: true });
+			}else {
+				if (Number(targetVariantSettingsJson.maximum_selectable) * Number(1) === totalSelected) {
+					dispatch({ type: "SET_VALID", payload: true });
+				} else {
+					dispatch({ type: "SET_VALID", payload: false });
+				}
+			}
+		}
+
+	}, [selections, totalSelected, dispatch])
+
+
+	console.log('=== Start Log ===');
+	console.log('productsVariant ===>', productsVariant);
+	console.log('savedSelection 2 ===>', savedSelection);
+	console.log('totalSelected ===>', totalSelected);
+	console.log('=== End Log ===');
+	console.log('   ');
+
+};
+
+export default Selection;

@@ -48,8 +48,7 @@ const CostCounter = () => {
 
 		calculateTotalPrice();
 	}, [state.steps]); // Re-run if steps or fetchedData change
-
-	console.log('state', state);
+	
 	return (
 		<Fragment>
 			{parseInt(price) > 0 && (

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useSteps } from "../context/StepContext";
 import OptionsRadio from "../components/OptionsRadio";
 import { useTranslation } from "react-i18next";
@@ -6,9 +7,28 @@ const Delevery = () => {
 
 	const { t } = useTranslation();
 	const { state, dispatch } = useSteps();
-	const stepIndex = state.currentStep;
+	let stepIndex = state.currentStep;
 
-	const handleOptionChange = (delivery: string) => {
+	const savedSelection = state.steps[stepIndex]?.data as string || '';
+	const [ delivery, setDelivery ] = useState(savedSelection);
+
+	const handleOptionChange = (delivery: string) => {		
+
+		setDelivery(delivery);
+
+	};
+
+	useEffect(() => {
+
+		if(delivery === "Pick Up From Shop") {
+			stepIndex = 1
+			dispatch({
+				type: "SET_STEP_DATA",
+				payload: { stepIndex , data: null },
+			});
+		}
+
+		stepIndex = 0
 		// Save the selected option
 		dispatch({
 		  type: "SET_STEP_DATA",
@@ -21,7 +41,7 @@ const Delevery = () => {
 		// Conditional navigation logic
 		dispatch({ type: "SET_PENDING_NEXT_STEP", payload: delivery === "Pick Up From Shop" ? 2 : 1 })
 
-	};	
+	}, [delivery])
 
 	return (
 		<div className="px-8 py-8 sm:px-0">
