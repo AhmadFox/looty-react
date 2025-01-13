@@ -14,6 +14,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ isNextDisabled }) => {
 	const { t } = useTranslation();
 	const { state, dispatch } = useSteps();
 	const [progress, setProgress] = useState<number>(0);
+	const lastStep = state.steps.length -1;
 
 	// handle navigation (next/back) with set progress bar percentage
 	const handleNavigation = (status: "increment" | "decrement") => {
@@ -43,16 +44,16 @@ const BottomNav: React.FC<BottomNavProps> = ({ isNextDisabled }) => {
 					progress > 0 &&
 					<button
 						onClick={() => handleNavigation("decrement")}
-						className={`border border-[#5a0616] text-[#5a0616] rounded-full capitalize font-medium ${state.currentStep === 9 ? 'p-4' : 'py-4 px-16'}`}
+						className={`border border-[#5a0616] text-[#5a0616] rounded-full capitalize font-medium ${state.currentStep === lastStep ? 'p-4' : 'py-4 px-16'}`}
 					>
-						{state.currentStep === 9 ?
+						{state.currentStep === lastStep ?
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
 								<path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
 							</svg>: t("back")}
 					</button>
 				}
 				{
-					state.currentStep === 9 ?
+					state.currentStep === lastStep ?
 						<button
 							disabled={isNextDisabled}
 							onClick={() => addToCart(state)}

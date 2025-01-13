@@ -23,8 +23,6 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 		maxCharacters: string;
 	}
 	> || null;
-
-	console.log('storedCard +++', selectableCard);
 	
 	const messageHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const messageLength = event.target.value.length; // Get the length of the text

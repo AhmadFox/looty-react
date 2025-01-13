@@ -23,7 +23,7 @@ const ContainerOptions = () => {
 
 	const { t } = useTranslation();
 	const { state } = useSteps();
-	console.log('state==>', state);
+	console.log('state ==>', state);
 
 	// const CurrentStepComponent = stepsComponents[state.currentStep];
 	const CurrentStepComponent =

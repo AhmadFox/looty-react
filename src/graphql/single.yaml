@@ -1,0 +1,43 @@
+quantity: 1
+form_type: product
+utf8: ✓
+id: 43694034911372
+product-id: 8042939023500
+section-id: template--17901807566988__main
+properties[_bundleId]: ZMDP-43694034911372
+properties[_selectedItems]: [
+  {"i":"43424696926348","q":1,"s":1},
+  {"i":"43424696303756","q":1,"s":2},
+  {"i":"43543454875788","q":"1","s":3},
+  {"i":"43424696205452","q":1,"s":4},
+  {"i":"43424696270988","q":1,"s":4},
+  {"i":"43734924656780","q":1,"s":5}
+  ]
+properties[Step 1]: 1x CHEESCAKE - Small
+properties[Step 2]: 1x FERRERO - Small
+properties[Step 3]: 1x Printable Card - happy birthdaay
+properties[Step 4]: 1x ROSE - Red Rose, 1x ROSE - Yellow Rose
+properties[Step 5]: 1x Cookie
+sections: cart-drawer,cart-icon-bubble
+sections_url: /products/single-selection
+
+
+quantity: 1
+form_type: product
+utf8: ✓
+id: 43694034911372
+product-id: 8042939023500
+section-id: template--17901807566988__main
+properties[_bundleId]: URZM-43694034911372
+properties[_selectedItems]: [
+  {"i":"43424696926348","q":1,"s":1},
+  {"i":"43424696303756","q":1,"s":2},
+  {"i":"43424696205452","q":2,"s":4}
+  ]
+properties[Step 1]: 1x CHEESCAKE - Small
+properties[Step 2]: 1x LOTUS - Small
+properties[Step 3]: 
+properties[Step 4]: 2x ROSE - Red Rose
+properties[Step 5]: 
+sections: cart-drawer,cart-icon-bubble
+sections_url: /products/single-selection

@@ -110,7 +110,16 @@ export type StepState = {
 		title: string;
 		subTitle: string;
 		isValid: boolean;
-		data: string | Array<{id: string; quantity: number}> | null | [] | unknown;
+		data: string | Array<
+			{
+				id: string;
+				quantity: number;
+				image?: string;
+				title?: string;
+				price?: string;
+				maxCharacters?: string;
+			}
+		> | null | [] | unknown;
 	}>;
 	pendingNextStep?: number;
 	history: number[];

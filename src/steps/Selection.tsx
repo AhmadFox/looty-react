@@ -85,10 +85,7 @@ const Selection = () => {
 	// Parse JSON safely
 	const targetVariantSettingsJson: TargetVariant = JSON.parse(
 		targetVariantSettings.value
-	);
-
-	console.log('targetVariantSettingsJson', targetVariantSettingsJson);
-	
+	);	
 
 	const targetVariantProductsJson: string[] = JSON.parse(
 		targetVariantProducts.value
@@ -156,9 +153,6 @@ const Selection = () => {
 	useEffect(() => {
 		
 		if (generalProducts.length > 0) {
-
-			console.log('generalProducts ==>', generalProducts);
-
 			const filteredProductsVariants = filterVariants(
 				generalProducts,
 				targetVariantSettingsJson.variants
@@ -204,9 +198,7 @@ const Selection = () => {
 				return updatedSelections;
 			});
 
-		} else {
-			console.log('updateTotalSelected', change);
-			
+		} else {			
 			setTotalSelected(1);
 			setSelections([change]);
 

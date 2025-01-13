@@ -1,0 +1,19 @@
+quantity: 1
+form_type: product
+utf8: ✓
+id: 43689046605964
+product-id: 8041729032332
+section-id: template--17901807566988__main
+properties[_bundleId]: CAQU-43689046605964
+properties[_selectedItems]: [
+  {"i":"43424696926348","q":1,"s":1},
+  {"i":"43424696729740","q":2,"s":1},
+  {"i":"43424696860812","q":1,"s":1},
+  {"i":"43424696205452","q":2,"s":2},
+  {"i":"43543454875788","q":"1","s":3}
+  ]
+properties[Step 1]: 1x CHEESCAKE - Small, 2x PISTACHIO - Small, 1x LOTUS - Small
+properties[Step 2]: 2x ROSE - Red Rose
+properties[Step 3]: 1x Printable Card - happy birthdaay
+sections: cart-drawer,cart-icon-bubble
+sections_url: /products/multi-selection

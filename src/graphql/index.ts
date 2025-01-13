@@ -1,6 +1,5 @@
 import { PrepareCart } from "../libs/PrepareCart";
 import { StepState } from "../types/contexts.types";
-// import { StepState } from "../types/contexts.types";
 import { getbundleQuery, getVariantsQuery } from "./queries/product";
 import { isShopifyError } from "./type-guards";
 
@@ -107,34 +106,35 @@ export async function getVariants(ids: unknown, lang: string) {
 	return variants;
 }
 
+
 export async function addToCart(state: StepState) {
 	const { items, attributes } = PrepareCart(state);
-
+	
 	console.log('items ==>', items);
 	console.log('attributes ==>', attributes);
-	
+
 	function addBundleToCart() {
 		const payload = {
 			quantity: 1, // Quantity of the item
 			form_type: "product",
 			utf8: "✓",
-			id: "43594934976652", // Variant ID
-			"product-id": "8015719301260", // Product ID
-			"section-id": "template--17779398279308__main",
+			id: state.fetchedData?.variantApiId, // Variant ID
+			"product-id": state.fetchedData?.productId, // Product ID
+			"section-id": "template--17901807566988__main",
 			properties: {
-				_bundleId: "NGHU-43688891154572",
-				_selectedItems: JSON.stringify([
-					{ i: "43424696926348", q: 1, s: 1 },
-					{ i: "43424697057420", q: 1, s: 1 },
-					{ i: "43424696795276", q: 1, s: 1 },
-					{ i: "43424696729740", q: 1, s: 1 }
-				]),
-				"Step 1": "1x CHEESCAKE - Small, 1x KINDER - Small, 1x MARSHMALLOW - Small, 1x PISTACHIO - Small"
+				_bundleId: `NGHU-${state.fetchedData?.variantApiId}`,
+				_selectedItems: JSON.stringify(items),
+				"Step 1": "1x CHEESCAKE - Small",
+				"Step 2": "1x FERRERO - Small",
+				"Step 3": "1x Printable Card - happy birthdaay",
+				"Step 4": "1x ROSE - Red Rose, 1x ROSE - Yellow Rose",
+				"Step 5": "1x Cookie",
+				"Step 6": "1x CHEESCAKE - Small, 1x KINDER - Small, 1x MARSHMALLOW - Small, 1x PISTACHIO - Small"
 			},
 			sections: "cart-drawer,cart-icon-bubble",
 			sections_url: "/products/biscuits-bundle-product"
 		};
-	
+
 		fetch('/cart/add.js', {
 			method: 'POST',
 			headers: {
@@ -142,18 +142,18 @@ export async function addToCart(state: StepState) {
 			},
 			body: JSON.stringify(payload)
 		})
-		.then(response => response.json())
-		.then(data => {
-			cartDrawer.renderContents(data);
-			console.log('Item added to cart:', data);
-			// Optionally update the cart UI
-		})
-		.catch(error => {
-			console.error('Error adding to cart:', error);
-		});
+			.then(response => response.json())
+			.then(data => {
+				cartDrawer.renderContents(data);
+				console.log('Item added to cart:', data);
+				// Optionally update the cart UI
+			})
+			.catch(error => {
+				console.error('Error adding to cart:', error);
+			});
 	}
-	
+
 	// Trigger add to cart
-	addBundleToCart();	
-	
+	addBundleToCart();
+
 }
