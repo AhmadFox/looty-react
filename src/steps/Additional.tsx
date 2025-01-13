@@ -5,7 +5,7 @@ import DateTime from "../components/form/DateTime";
 import PhoneNumber from "../components/form/PhoneNumber";
 import { useTranslation } from "react-i18next";
 
-const Additionaliformation = () => {
+const Additional = () => {
 
 	const { t } = useTranslation();
 	const { state, dispatch } = useSteps();
@@ -194,4 +194,4 @@ const Additionaliformation = () => {
 	);
 };
 
-export default Additionaliformation;
+export default Additional;

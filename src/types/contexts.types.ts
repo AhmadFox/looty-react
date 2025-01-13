@@ -86,8 +86,12 @@ export type ProductData = {
 
 export type DataType = {
 	data?: string | {
-	  id: string;
-	  quantity: number;
+		id: string;
+		quantity: number;
+		price: string;
+		title: string;
+		image: string;
+		maxCharacters: string;
   }[] | {
 	  senderName: string;
 	  recipientName: string;
@@ -111,14 +115,31 @@ export type StepState = {
 	pendingNextStep?: number;
 	history: number[];
 	fetchedData: ProductData | null;
+	printableCard: PrintableCardData | null;
 	selectionType: "multi-selection" | "single-selection" | "group-selection" | null;
 };
+
+export type PrintableCardData = {
+	printable: boolean;
+	stepIndex: number;
+	product: Array<{
+		id: string;
+		quantity: number;
+		image: string;
+		title: string;
+		price: string;
+	}>
+}
 
 export type Action =
 	| { type: "NEXT_STEP" }
 	| { type: "PREVIOUS_STEP" }
+	| { type: "GOTO_STEP"; payload: number }
 	| { type: "SET_VALID"; payload: boolean }
 	| { type: "SET_STEP_DATA"; payload: { stepIndex: number; data: unknown } }
 	| { type: "SET_PENDING_NEXT_STEP"; payload: number }
 	| { type: "SET_FETCHED_DATA"; payload: ProductData | null }
+	| { type: "SET_PRINTABLE_CARD"; payload: PrintableCardData | null }
 	| { type: "SET_SELECTION_TYPE"; payload: "multi-selection" | "single-selection" | "group-selection" | null };
+
+	

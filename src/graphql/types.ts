@@ -23,16 +23,14 @@ export type Bundle = Omit<ShopifyProduct, 'variants' | 'metafields'> & {
 	variants: Variants;
 };
 
-export type VariantsCall = {
-	ids: []
-};
-
-
-
 export type ShopifyProductOperation = {
-	data: { product: ShopifyProduct };
+	data: { 
+		product: ShopifyProduct;
+		nodes: unknown;
+	};
 	variables: {
-		handle: string;
+		handle?: string;
+		ids?: unknown;
 	};
 };
 

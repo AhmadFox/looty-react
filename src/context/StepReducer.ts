@@ -15,6 +15,7 @@ export const initialState: StepState = {
 	steps: initialSteps,
 	history: [],
 	fetchedData: null,
+	printableCard: null,
 	selectionType: null,
 };
 
@@ -37,6 +38,14 @@ export const stepsReducer = (state: StepState, action: Action): StepState => {
 				currentStep: state.history[state.history.length - 1] || 0, // Navigate to the last step in history or fallback to 0
 				history: state.history.slice(0, -1), // Remove the last step from history
 			};
+
+		case "GOTO_STEP":
+			return {
+				...state,
+				currentStep: Math.max(0, Math.min(action.payload, state.steps.length - 1)), // Ensure the step number is within bounds
+				history: [...state.history, state.currentStep], // Save the current step in history
+			};
+		
 
 		case "SET_VALID":
 			return {
@@ -67,10 +76,10 @@ export const stepsReducer = (state: StepState, action: Action): StepState => {
 			.map((field) => {
 				const stepData = JSON.parse(field.value); // Parse JSON string from API
 				return {
-				title: stepData.title, // Dynamic step title
-				subTitle: stepData.description, // Dynamic step description
-				isValid: true, // Default validity
-				data: null, // Default data
+					title: stepData.title, // Dynamic step title
+					subTitle: stepData.description, // Dynamic step description
+					isValid: true, // Default validity
+					data: null, // Default data
 				};
 			})
 
@@ -81,7 +90,9 @@ export const stepsReducer = (state: StepState, action: Action): StepState => {
 			]
 
 			return { ...state, fetchedData: action.payload, steps: updatedSteps, }; }
-			
+		
+		case "SET_PRINTABLE_CARD":
+			return { ...state, printableCard: action.payload };
 
 		case "SET_SELECTION_TYPE":
 			return { ...state, selectionType: action.payload };

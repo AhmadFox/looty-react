@@ -4,6 +4,8 @@ import { getVariants } from "../graphql";
 import { ChangeType } from "./types";
 import ItemSelection from "../components/ItemSelection";
 import ItemSelectionLoader from "../components/skeleton/ItemSelectionLoader";
+import PrintableCards from "../components/PrintableCards";
+import PrintableCardsLoader from "../components/skeleton/PrintableCardsLoader";
 
 type TargetVariant = {
 	title: string;
@@ -48,7 +50,16 @@ const Selection = () => {
 	const [ productsVariant, setProductsVariant ] = useState<Product[]>([]);
 	
 	// Retrieve the saved selection for the current step
-	const [ savedSelection, setSavedSelection ] = useState((state.steps[state.currentStep]?.data as Array<{ id: string; quantity: number }>) || [])
+	const [ savedSelection, setSavedSelection ] = useState((state.steps[state.currentStep]?.data as Array<
+		{
+			id: string;
+			quantity: number;
+			image: string;
+			title: string;
+			price: string;
+			maxCharacters: string;
+		}
+		>) || [])
 	
 	// Initialize totalSelected from savedSelection
 	const [totalSelected, setTotalSelected] = useState(0);
@@ -111,8 +122,14 @@ const Selection = () => {
 		const fetchTargetVariantsProducts = async () => {
 			setProductsVariant([]);
 			try {
-				const response = await getVariants(targetVariantProductsJson);
-				setGeneralProducts(response);
+				const response = await getVariants(targetVariantProductsJson, "en");
+
+				if (Array.isArray(response)) {
+					setGeneralProducts(response);
+				} else {
+					console.error("Unexpected response structure:", response);
+				}
+				
 			} catch (error) {
 				console.error(
 					"Error fetching or filtering target variant products:",
@@ -139,6 +156,9 @@ const Selection = () => {
 	useEffect(() => {
 		
 		if (generalProducts.length > 0) {
+
+			console.log('generalProducts ==>', generalProducts);
+
 			const filteredProductsVariants = filterVariants(
 				generalProducts,
 				targetVariantSettingsJson.variants
@@ -154,6 +174,8 @@ const Selection = () => {
 	}, [generalProducts, state.currentStep]);
 
 	const updateTotalSelected = (change: ChangeType) => {
+
+		
 
 		if( selectionType === 'multi-selection' ) {
 			
@@ -183,7 +205,8 @@ const Selection = () => {
 			});
 
 		} else {
-
+			console.log('updateTotalSelected', change);
+			
 			setTotalSelected(1);
 			setSelections([change]);
 
@@ -195,7 +218,14 @@ const Selection = () => {
 
 	useEffect(() => {
 
-		setSavedSelection((state.steps[state.currentStep]?.data as Array<{ id: string; quantity: number }>) || [])
+		setSavedSelection((state.steps[state.currentStep]?.data as Array<{
+			id: string;
+			quantity: number;
+			image: string;
+			title: string;
+			price: string;
+			maxCharacters: string;
+		}>) || [])
 	}, [state.currentStep])
 
 	// Restore `totalSelected` when navigating back to this component
@@ -226,44 +256,62 @@ const Selection = () => {
 			dispatch({ type: "SET_VALID", payload: false });
 		}
 
-	}, [isItemUpdate, state.currentStep, productsVariant, selections, totalSelected])
+	}, [isItemUpdate, state.currentStep, productsVariant, selections, totalSelected]);
 
 	return (
 		<div className="px-8 py-8 sm:px-0">
-			<ul className="flex flex-col gap-6">
-				{productsVariant.length > 0 ? (
-					productsVariant.map((product) => (
-						product.variants.nodes.map((variant, idx) => (
-							<ItemSelection
-								key={idx}
-								id={variant.id}
-								title={product.title}
-								variantTitle={variant.title}
-								image={variant.image.url || ""}
-								price={variant.price.amount || ""}
-								currency={variant.price.currencyCode || ""}
-								optional={targetVariantSettingsJson.required === '0' ? true : false}
-								type={selectionType}
-								totalSelected={totalSelected}
-								maxQuantity={String(targetVariantSettingsJson.maximum_quantity)}
-								maxSelection={targetVariantSettingsJson.maximum_selectable}
-								groupQuantity={targetVariantSettingsJson.quantity_increment}
-								cardStyle={targetVariantSettingsJson.card_style}
-								stepIndex={state.currentStep}
-								updateTotalSelected={updateTotalSelected}
-							/>
-						))
-					))
-				) : (
-					<div className="flex flex-col gap-6">
-						<ItemSelectionLoader />
-						<ItemSelectionLoader />
-						<ItemSelectionLoader />
-						<ItemSelectionLoader />
-						<ItemSelectionLoader />
+
+			{
+				(targetVariantSettingsJson.selection_type === 's' && targetVariantSettingsJson.required === '0') ?
+				<div className="">
+					{productsVariant.length > 0 ?
+					<PrintableCards
+						stepIndex={state.currentStep}
+						productsVariant={productsVariant}
+						savedSelection={savedSelection}
+					/>:
+					<div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+						<PrintableCardsLoader />
+						<PrintableCardsLoader />
+						<PrintableCardsLoader />
 					</div>
-				)}
-			</ul>
+					}
+				</div>:
+				<ul className="flex flex-col gap-6">
+					{productsVariant.length > 0 ? (
+						productsVariant.map((product) => (
+							product.variants.nodes.map((variant, idx) => (
+								<ItemSelection
+									key={idx}
+									id={variant.id}
+									title={product.title}
+									variantTitle={variant.title}
+									image={variant.image.url || ""}
+									price={variant.price.amount || ""}
+									currency={variant.price.currencyCode || ""}
+									optional={targetVariantSettingsJson.required === '0' ? true : false}
+									type={selectionType}
+									totalSelected={totalSelected}
+									maxQuantity={String(targetVariantSettingsJson.maximum_quantity)}
+									maxSelection={targetVariantSettingsJson.maximum_selectable}
+									groupQuantity={targetVariantSettingsJson.quantity_increment}
+									cardStyle={targetVariantSettingsJson.card_style}
+									stepIndex={state.currentStep}
+									updateTotalSelected={updateTotalSelected}
+								/>
+							))
+						))
+					) : (
+						<div className="flex flex-col gap-6">
+							<ItemSelectionLoader />
+							<ItemSelectionLoader />
+							<ItemSelectionLoader />
+							<ItemSelectionLoader />
+							<ItemSelectionLoader />
+						</div>
+					)}
+				</ul>
+			}
 		</div>
 	);
 };

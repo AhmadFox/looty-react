@@ -25,7 +25,16 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 	const { state } = useSteps();
 
 	// Retrieve the saved selection for this step
-	const savedSelection = state.steps[stepIndex]?.data as Array<{ id: string, quantity: number }> || [];
+	const savedSelection = state.steps[stepIndex]?.data as Array<
+	{
+		id: string;
+		quantity: number;
+		image: string;
+		title: string;
+		price: string;
+		maxCharacters: string;
+	}
+	> || [];
 
 	// Find the matching saved selection (if any)
 	const savedItem = savedSelection.find((item) => item.id === id);
@@ -37,7 +46,16 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 	const handleDecrement = () => {
 		if (count > 0) {
 			setCount((prev) => prev - groupQuantity);
-			updateTotalSelected({ id, quantity: - groupQuantity });
+			updateTotalSelected(
+				{ 
+					id,
+					quantity: - groupQuantity,
+					image: image,
+					title: title,
+					price: price || "",
+					maxCharacters: "",
+				}
+			);
 		}
 	};
 
@@ -45,14 +63,32 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 		const maxCount = parseInt(maxQuantity, 10); // Ensure maxQuantity is treated as a number
 		if (count < maxCount && totalSelected < maxCount) {
 			setCount((prev) => prev + groupQuantity);
-			updateTotalSelected({ id, quantity: groupQuantity });
+			updateTotalSelected(
+				{ 
+					id,
+					quantity: groupQuantity,
+					image: image,
+					title: title,
+					price: price || "",
+					maxCharacters: "",
+				}
+			);
 		}
 	};
 
 	// Handle selection for radio button
 	const handleRadioChange = () => {		
 		setChecked(!checked);
-		updateTotalSelected({ id, quantity: 1 });
+		updateTotalSelected(
+			{ 
+				id,
+				quantity: 1,
+				image: image,
+				title: title,
+				price: price || "",
+				maxCharacters: "",
+			}
+		);
 	};
 
 	useEffect(() => {

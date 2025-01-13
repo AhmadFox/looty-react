@@ -1,6 +1,10 @@
 export type ChangeType = {
 	id: string;
 	quantity: number;
+	image: string;
+	title: string;
+	price: string;
+	maxCharacters: string;
 };
 
 export type BoxViewProps = {
@@ -11,9 +15,14 @@ export type BoxViewProps = {
 };
 
 export interface TimelineNodeProps {
-	data: {
+	step: {
 		data?: string | Array<{
-			id: string; quantity: number
+			id: string;
+			quantity: number;
+			price: string;
+			title: string;
+			image: string;
+			maxCharacters: string;
 		}> | {
 				senderName: string;
 				recipientName: string;
@@ -41,6 +50,35 @@ export type RadioSelectionProps = {
 	onChange: (id: string) => void;
 }
 
+export type PrintableCardsProps = {
+	stepIndex: number;
+	savedSelection: Array<{
+	  maxCharacters: string;
+	  price: string;
+	  title: string;
+	  image: string;
+	  id: string;
+	  quantity: number;
+	}>;
+	productsVariant: Array<{
+	  title: string;
+	  variants: {
+		nodes: Array<{
+		  id: string;
+		  title: string;
+		  image: {
+			url: string;
+		  };
+		  price: {
+			amount: string;
+			currencyCode: string;
+		  };
+		}>;
+	  };
+	}>;
+  };
+  
+
 export type ItemSelectionProps = {
 	id: string;
 	title: string;
@@ -57,7 +95,14 @@ export type ItemSelectionProps = {
 	cardStyle: string;
 	thubanailRounded?: string;
 	stepIndex: number;
-	updateTotalSelected: (change: { id: string; quantity: number }) => void; // Updated type
+	updateTotalSelected: (change: {
+		id: string;
+		quantity: number;
+		image: string;
+		title: string;
+		price: string;
+		maxCharacters: string;
+	}) => void; // Updated type
 };
 
 

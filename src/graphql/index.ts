@@ -4,7 +4,7 @@ import { StepState } from "../types/contexts.types";
 import { getbundleQuery, getVariantsQuery } from "./queries/product";
 import { isShopifyError } from "./type-guards";
 
-import { Bundle, ShopifyProductOperation, VariantsCall } from "./types";
+import { Bundle, ShopifyProductOperation } from "./types";
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never;
 
@@ -92,22 +92,17 @@ export async function getBundle(handle: string, lang: string): Promise<Bundle | 
 	return bundle;
 }
 
-export async function getVariants(ids: []): Promise<VariantsCall | undefined> {
+export async function getVariants(ids: unknown, lang: string) {
 	const res = await shopifyFetch<ShopifyProductOperation>({
 		query: getVariantsQuery,
 		tags: ["products"],
-		// lang,
+		lang,
 		variables: {
 			ids
 		}
 	});
 
 	const variants = res.body.data.nodes || [];
-	// const variants: Bundle = {
-	// 	...shopifyProduct,
-	// 	metafields: shopifyProduct.metafields,
-	// 	variants: shopifyProduct.variants.nodes.flatMap((node) => node.metafields),
-	// };
 
 	return variants;
 }

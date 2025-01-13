@@ -62,6 +62,8 @@ export const bundleFragment = /* GraphQL */ `
 export const variantsFragment = /* GraphQL */ `
 	fragment variants on Product {
 		title
+		tags
+		productType
 		variants(first: 100) {
 			nodes {
 				title
@@ -72,6 +74,9 @@ export const variantsFragment = /* GraphQL */ `
 				id
 				image {
 					url
+				}
+				metafield(key: "printable_card_max_letters", namespace: "custom") {
+					value
 				}
 			}
 		}

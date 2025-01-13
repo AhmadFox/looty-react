@@ -9,14 +9,14 @@ import Locations from "../steps/Locations"
 import Preparation from "../steps/Preparation"
 import Selection from "../steps/Selection";
 import BoxTitle from "../steps/BoxTitle"
-import Additionaliformation from "../steps/Additionaliformation"
+import Additional from "../steps/Additional"
 
 const staticStepsComponents = {
 	delivery_method: Delevery,
 	city: Locations,
 	preparation: Preparation,
 	box_title: BoxTitle,
-	additional_information: Additionaliformation,
+	additional_information: Additional,
 };
 
 const ContainerOptions = () => {
