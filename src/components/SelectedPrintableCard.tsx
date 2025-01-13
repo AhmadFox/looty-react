@@ -12,6 +12,8 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 	const [emptyPrintableCard, setEmptyPrintableCard] = useState(false);
 	const [messageCount, setMessageCount] = useState(0);
 	const currency = state.fetchedData?.priceRange.minVariantPrice.currencyCode;
+	const stepIndex = state.currentStep;
+	const [ message, setMessage ] = useState((state.steps[stepIndex]?.data as { message?: string })?.message || "");
 
 	const selectableCard = state.printableCard?.product as Array<
 	{
@@ -27,7 +29,8 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 	const messageHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const messageLength = event.target.value.length; // Get the length of the text
 		setMessageCount(messageLength); // Update state with the length
-		onChangeMessage(event.target.value)
+		onChangeMessage(event.target.value);
+		setMessage(event.target.value);
 	};
 	
 
@@ -128,6 +131,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 					rows={4}
 					id="message"
 					maxLength={Number(selectableCard[0].maxCharacters)}
+					value={message}
 					onChange={messageHandler}
 					placeholder={t("message_on_printable_card")}
 					className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md w-full resize-none"

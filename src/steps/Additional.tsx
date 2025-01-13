@@ -13,13 +13,13 @@ const Additional = () => {
 
 	const [isFormValid, setIsFormValid] = useState(false);
 	const [formData, setFormData] = useState({
-		senderName: "",
-		recipientName: "",
-		deliveryDate: "",
-		deliveryTime: "",
-		recipientMobile: "",
-		recipientAddress: "",
-		message: ""
+		senderName: (state.steps[stepIndex]?.data as { senderName?: string })?.senderName || "",
+		recipientName: (state.steps[stepIndex]?.data as { recipientName?: string })?.recipientName || "",
+		deliveryDate: (state.steps[stepIndex]?.data as { deliveryDate?: string })?.deliveryDate || "",
+		deliveryTime: (state.steps[stepIndex]?.data as { deliveryTime?: string })?.deliveryTime || "",
+		recipientMobile: (state.steps[stepIndex]?.data as { recipientMobile?: string })?.recipientMobile || "",
+		recipientAddress: (state.steps[stepIndex]?.data as { recipientAddress?: string })?.recipientAddress || "",
+		message: (state.steps[stepIndex]?.data as { message?: string })?.message || "",
 	});
 	const [formErrors, setFormErrors] = useState({
 		senderName: "",

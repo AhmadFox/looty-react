@@ -10,7 +10,8 @@ const PhoneNumber = ({ onPhoneChange }: PhoneNumberProps) => {
 
 	const { t } = useTranslation();
 	const { state } = useSteps();
-	const [value, setValue] = useState('');
+	const stepIndex = state.currentStep;
+	const [value, setValue] = useState((state.steps[stepIndex]?.data as { recipientMobile?: string })?.recipientMobile || "");
 	const [isValid, setIsValid] = useState(true);
 
 	// Simplified phone validation regex for Jordanian numbers

@@ -1,15 +1,19 @@
 import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSteps } from "../../context/StepContext";
 
 interface DateTimeProps {
 	onDateTimeChange: (data: { deliveryDate: string; deliveryTime: string }) => void;
 }
 
 const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
+	
 	const { t } = useTranslation();
+	const { state } = useSteps();
+	const stepIndex = state.currentStep;
 	const [formData, setFormData] = useState({
-		deliveryDate: "",
-		deliveryTime: "",
+		deliveryDate: (state.steps[stepIndex]?.data as { deliveryDate?: string })?.deliveryDate || "",
+		deliveryTime: (state.steps[stepIndex]?.data as { deliveryTime?: string })?.deliveryTime || "",
 	});
 	const [availableTimes, setAvailableTimes] = useState<string[]>([]);
 
