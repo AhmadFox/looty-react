@@ -20,9 +20,6 @@ const Locations = () => {
 			?.value || '[]'
 	);
 
-	// console.log('cities ==>', cities);
-	
-
 	const handleOptionChange = (id: string) => {		
 		// Save the selected option
 		dispatch({
@@ -30,7 +27,7 @@ const Locations = () => {
 		  payload: { stepIndex, data: id },
 		});
 
-		if (state.steps[preparationStepIndex]?.data === "Baked" && id !== "Amman") {
+		if (state.steps[preparationStepIndex]?.data === "baked" && id !== "Amman") {
 			dispatch({
 			  type: "SET_STEP_DATA",
 			  payload: { stepIndex: preparationStepIndex, data: null },

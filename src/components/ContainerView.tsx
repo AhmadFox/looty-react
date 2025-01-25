@@ -23,9 +23,13 @@ const ContainerView = () => {
 	}
 
 	useEffect(() => {
-		const htmlBody = document.querySelector('html');
+		const htmlBody = document.querySelector('body');
 		if (htmlBody) {
 			htmlBody.style.overflow = collaps ? 'hidden' : 'auto';
+			htmlBody.scrollTo({
+				top: 0,
+				behavior: 'smooth', // This creates a smooth scrolling effect
+			});
 		}
 	}, [collaps]);
 

@@ -131,7 +131,7 @@ const PrintableCards: React.FC<PrintableCardsProps> = ({
 				},
 			});
 		}
-	}, [selectedCard, state.currentStep]);
+	}, [selectedCard, state.currentStep, productsVariant, dispatch, stepIndex]);
 
 	useEffect(() => {
 

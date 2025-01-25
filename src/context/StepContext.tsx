@@ -32,7 +32,9 @@ export const StepsProvider: React.FC<
 						metafields: bundleData.metafields as [],
 						variants: bundleData.variants as [],
 						variantApiId: variantApiId as number,
-						productId: Number(bundleData.id)
+						productId: Number(bundleData.id),
+						language: language as string,
+						market: bundleData.variantBySelectedOptions.storeAvailability.edges as []
 
 					};
 

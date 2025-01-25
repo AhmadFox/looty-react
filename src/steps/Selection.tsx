@@ -30,6 +30,7 @@ type Variant = {
 type ProductVariant = {
 	id: string;
 	title: string;
+	quantityAvailable: number;
 	image: { url: string };
 	price: { amount: string; currencyCode: string };
 };
@@ -119,7 +120,7 @@ const Selection = () => {
 		const fetchTargetVariantsProducts = async () => {
 			setProductsVariant([]);
 			try {
-				const response = await getVariants(targetVariantProductsJson, "en");
+				const response = await getVariants(targetVariantProductsJson, state.fetchedData?.language as string);
 
 				if (Array.isArray(response)) {
 					setGeneralProducts(response);
@@ -250,6 +251,14 @@ const Selection = () => {
 
 	}, [isItemUpdate, state.currentStep, productsVariant, selections, totalSelected]);
 
+
+	console.log('targetVariantSettingsJson +++', targetVariantSettingsJson);
+	console.log('targetVariantProductsJson +++', targetVariantProductsJson);
+	console.log('productsVariant +++', productsVariant);
+	
+
+	
+
 	return (
 		<div className="px-8 py-8 sm:px-0">
 
@@ -284,6 +293,7 @@ const Selection = () => {
 									optional={targetVariantSettingsJson.required === '0' ? true : false}
 									type={selectionType}
 									totalSelected={totalSelected}
+									quantityAvailable={variant.quantityAvailable}
 									maxQuantity={String(targetVariantSettingsJson.maximum_quantity)}
 									maxSelection={targetVariantSettingsJson.maximum_selectable}
 									groupQuantity={targetVariantSettingsJson.quantity_increment}

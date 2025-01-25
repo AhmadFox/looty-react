@@ -5,7 +5,7 @@ export const initialSteps = [
 	{ title: "delivery_method", subTitle: "select_delivery_method", isValid: false, data: null },
 	{ title: "city", subTitle: "select_delivery_to_location", isValid: false, data: null },
 	{ title: "preparation", subTitle: "preparation_type", isValid: false, data: null },
-	{ title: "box_title", subTitle: "select_title_print_on_the_box", isValid: true, data: null }, // Optional Step
+	{ title: "box_title", subTitle: "select_title_print_on_the_box", isValid: false, data: null }, // Optional Step
 	{ title: "additional_information", subTitle: "provide_additional_information", isValid: false, data: null },
 ];
 

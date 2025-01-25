@@ -82,6 +82,25 @@ export type ProductData = {
 	}>;
 	variantApiId: number;
 	productId: number;
+	language: string;
+	market: Array<{
+		node: {
+			available: boolean;
+			pickUpTime: string;
+			location: {
+				name: string;
+				address: {
+					address1: string;
+					address2: string;
+					city: string;
+					country: string;
+					latitude: number;
+					longitude: number;
+					phone: string;
+				}
+			}
+		}
+	}>;
 };
 
 export type DataType = {

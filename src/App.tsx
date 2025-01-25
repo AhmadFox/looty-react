@@ -11,8 +11,8 @@ const App = () => {
 	i18n.changeLanguage('en');
 	return (
 		<StepsProvider
-			productHandle="multi-selection"
-			variantApiId ={43689046605964}
+			productHandle="lab2een"
+			variantApiId ={49674273423657}
 			language={'en'}
 		>
 			<main className="page-width p-0 sm:px-8 flex flex-col sm:grid sm:grid-cols-2 sm:gap-9 md:gap-14 lg:gap-16 h-full">

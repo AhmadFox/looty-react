@@ -12,6 +12,7 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 	currency,
 	image,
 	type,
+	quantityAvailable,
 	totalSelected,
 	maxQuantity,
 	maxSelection,
@@ -98,7 +99,7 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 	}, [totalSelected, maxSelection, count, checked]);
 
 	// Determine whether the item should be "disabled" (dimmed) based on selection
-	const isDimmed = type !== "single-selection" && totalSelected >= Number(maxQuantity)  && count === 0;
+	const isDimmed = type !== "single-selection" && totalSelected >= Number(maxQuantity)  && count === 0 || quantityAvailable < Number(groupQuantity);
 
 	return (
 		<li className={`flex justify-between items-center ${isDimmed ? "opacity-30 select-none" : ""}`}>
@@ -108,28 +109,42 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 					alt={`item ${title} in the box`}
 					className={`w-28 md:w-32 h-28 md:h-32 object-cover bg-slate-100 ${cardStyle === 'portrait' ? 'rounded-lg' : 'rounded-full'}`}
 				/>
-				<div className="flex flex-col gap-3">
+				<div className="flex flex-col gap-1">
 					<span className="text-2xl font-medium h2 text-[#202020] capitalize flex items-center gap-x-2">
 						{
 							cardStyle !== 'portrait' ?
-							<div className="">
-								{title}{" "} {optional && <small className="text-gray-400 font-normal text-base">({t("optional")})</small>}
+							<div className="flex gap-2 items-center">
+								<span>{title}{" "} {optional && <small className="text-gray-400 font-normal text-base">({t("optional")})</small>}</span>
 							</div>:
 							<div className="">
 								{variantTitle}{" "} {optional && <small className="text-gray-400 font-normal text-base">({t("optional")})</small>}
 							</div>
 						}
 					</span>
-					<span className="text-blue-600 font-medium text-xl">
-						{optional && "+"}
-						{price} {currency}
-					</span>
+
+					{
+						(quantityAvailable <= 0 || quantityAvailable < Number(groupQuantity)) ?
+						<span className="font-medium text-xl text-red-500">{t('out_of_stock')}</span>:
+						(quantityAvailable ===  Number(groupQuantity)) ?
+						<span className="font-medium text-xl text-blue-600">
+							<div className="block">
+								{optional && "+"}
+								{price} {currency}
+							</div>
+							<span className="font-medium text-xl text-gray-400">{t("only_in_stock", {quantityAvailable})}</span>
+						</span>:
+						<span className="text-blue-600 font-medium text-xl">
+							{optional && "+"}
+							{price} {currency}
+						</span>
+					}
+
 				</div>
 			</label>
 			{type === "multi-selection" ? (
 				<div className="flex gap-4 items-center">
 					<button
-						disabled={count === 0}
+						disabled={count === 0 }
 						onClick={handleDecrement}
 						className="w-10 h-10 rounded-full bg-gray-300 text-gray-800"
 					>
@@ -137,14 +152,14 @@ const ItemSelection: React.FC<ItemSelectionProps> = ({
 					</button>
 					<span className="text-[#5a0616]">{count}</span>
 					<button
-						disabled={count === parseInt(maxQuantity, 10) || totalSelected >= Number(maxQuantity)}
+						disabled={count === Number(maxQuantity) || totalSelected >= Number(maxQuantity) || quantityAvailable <= count }
 						onClick={handleIncrement}
 						className="w-10 h-10 rounded-full bg-gray-300 text-gray-800"
 					>
 						+
 					</button>
 				</div>
-			) :  (
+			):  (
 				<label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor={id}>
 					<input
 						name={type}

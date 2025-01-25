@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSteps } from "../context/StepContext";
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +11,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 	const { state, dispatch } = useSteps();
 	const [emptyPrintableCard, setEmptyPrintableCard] = useState(false);
 	const [messageCount, setMessageCount] = useState(0);
+	const [error, setError] = useState(true);
 	const currency = state.fetchedData?.priceRange.minVariantPrice.currencyCode;
 	const stepIndex = state.currentStep;
 	const [ message, setMessage ] = useState((state.steps[stepIndex]?.data as { message?: string })?.message || "");
@@ -34,9 +35,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 	};
 	
 
-	const handelChangeCard = () => {
-		console.log('state.printableCard?.stepIndex', state.printableCard?.stepIndex);
-		
+	const handelChangeCard = () => {		
 		onChangeMessage('');
 		
 		if (state.printableCard) {
@@ -60,9 +59,26 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 					data: null,
 				},
 			});
+			dispatch({
+				type: "SET_PRINTABLE_CARD",
+				payload: {
+					printable: true,
+					product: [],
+					stepIndex: state.printableCard.stepIndex
+				},
+			});
 		}
 
 	};
+
+	useEffect(() => {
+		// Check if the placeholder is not empty
+		if (messageCount === 0) {
+			setError(true);
+		  } else {
+			setError(false); // Reset error if placeholder is empty
+		  }
+	}, [messageCount]);
 
 
 	if (!selectableCard || emptyPrintableCard || selectableCard.length === 0) {
@@ -136,9 +152,17 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 					placeholder={t("message_on_printable_card")}
 					className="py-3 px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md w-full resize-none"
 				/>
-				<div className="flex justify-end text-base">
+				<div className="flex justify-between text-base">
+					<small className="text-red-500">
+						{
+							error ? t('message_canot_be_empty') : ''
+						}
+					</small>
 					<span>{messageCount}/{selectableCard[0].maxCharacters} {t("charachters")}</span>
 				</div>
+				{/* {
+					error && <small className="text-red-500">{error}</small>
+				} */}
 			</div>
 		</div>
 	);

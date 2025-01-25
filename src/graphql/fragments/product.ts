@@ -5,6 +5,28 @@ export const bundleFragment = /* GraphQL */ `
 		id
 		title
 		tags
+		variantBySelectedOptions(selectedOptions: {name: "Title", value: "Default Title"}) {
+			storeAvailability(first: 1) {
+				edges {
+					node {
+						available
+						pickUpTime
+						location {
+							name
+							address {
+								city
+								country
+								phone
+								latitude
+								longitude
+								address1
+								address2
+							}
+						}
+					}
+				}
+			}
+		}
 		featuredImage {
 			url
 		}
@@ -67,6 +89,8 @@ export const variantsFragment = /* GraphQL */ `
 		variants(first: 100) {
 			nodes {
 				title
+				availableForSale
+				quantityAvailable
 				price {
 					amount
 					currencyCode

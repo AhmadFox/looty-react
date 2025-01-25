@@ -23,12 +23,12 @@ const ContainerOptions = () => {
 
 	const { t } = useTranslation();
 	const { state } = useSteps();
-	console.log('state ==>', state);
 
 	// const CurrentStepComponent = stepsComponents[state.currentStep];
 	const CurrentStepComponent =
   	staticStepsComponents[state.steps[state.currentStep].title as keyof typeof staticStepsComponents] || Selection;
 
+	  console.log('state ++++', state);
 
 	return (
 		<div className="flex flex-col justify-between h-full w-full">

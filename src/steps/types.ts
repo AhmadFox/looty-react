@@ -89,6 +89,7 @@ export type ItemSelectionProps = {
 	image: string;
 	type: string;
 	maxQuantity: string;
+	quantityAvailable: number;
 	totalSelected: number;
 	maxSelection: number;
 	groupQuantity: number;

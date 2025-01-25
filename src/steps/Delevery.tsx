@@ -15,12 +15,17 @@ const Delevery = () => {
 	const handleOptionChange = (delivery: string) => {		
 
 		setDelivery(delivery);
+		stepIndex = 2
+		dispatch({
+			type: "SET_STEP_DATA",
+			payload: { stepIndex , data: null },
+		});
 
 	};
 
 	useEffect(() => {
 
-		if(delivery === "Pick Up From Shop") {
+		if(delivery === "pick_up_from_shop") {
 			stepIndex = 1
 			dispatch({
 				type: "SET_STEP_DATA",
@@ -39,7 +44,7 @@ const Delevery = () => {
 		dispatch({ type: "SET_VALID", payload: true });
 	
 		// Conditional navigation logic
-		dispatch({ type: "SET_PENDING_NEXT_STEP", payload: delivery === "Pick Up From Shop" ? 2 : 1 })
+		dispatch({ type: "SET_PENDING_NEXT_STEP", payload: delivery === "pick_up_from_shop" ? 2 : 1 })
 
 	}, [delivery])
 
@@ -48,7 +53,7 @@ const Delevery = () => {
 			<div className="flex flex-col gap-5">
 				<OptionsRadio
 					name="delivery-option"
-					id="Pick Up From Shop"
+					id="pick_up_from_shop"
 					label={t('pick_up_from_shop')}
 					icon="shop"
 					stepIndex={stepIndex}
@@ -56,7 +61,7 @@ const Delevery = () => {
 				/>
 				<OptionsRadio
 					name="delivery-option"
-					id="Delivery To Location"
+					id="delivery_to_location"
 					label={t('delivery_to_location')}
 					icon="delevery"
 					stepIndex={stepIndex}

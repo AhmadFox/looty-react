@@ -96,6 +96,12 @@ export type ShopifyProduct = {
 	tags: string[];
 	updatedAt: string;
 	seo: Record<string, unknown>;
+	bundle: unknown;
+	variantBySelectedOptions: {
+		storeAvailability: {
+			edges: [];
+		}
+	}
 };
 
 export interface Metafield {
@@ -111,6 +117,15 @@ export type Variants = Array<{
 	};
 	metafields: Metafield[];
 }> | Metafield[];
+
+export type StepDataItem = {
+    id: string;
+    quantity: number;
+    image: string;
+    title: string;
+    price: string;
+    maxCharacters?: string;
+};
 
 export interface ProductData {
 	title: string;

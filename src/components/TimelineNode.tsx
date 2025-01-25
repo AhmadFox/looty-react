@@ -10,7 +10,7 @@ const TimelineNode: React.FC<TimelineNodeProps> = ({ isLastNode, step, number  }
 		let nodeStep = null;
 
 		if(typeof(step.data) === 'string') {
-			nodeStep = <p className="">{step.data}</p>
+			nodeStep = <p className="">{t(step.data)}</p>
 
 		} else if (Array.isArray(step?.data)) {
 			nodeStep = 
