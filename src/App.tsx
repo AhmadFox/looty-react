@@ -11,7 +11,7 @@ const App = () => {
 	i18n.changeLanguage('en');
 	return (
 		<StepsProvider
-			productHandle="lab2een"
+			productHandle="i-love-you-package"
 			variantApiId ={49674273423657}
 			language={'en'}
 		>
@@ -25,11 +25,11 @@ const App = () => {
 
 export default App;
 
-// single-selection
-// pid:8042939023500
+// lab2een
+// pid:49674273423657
 
-// multi-selection
-// 43689046605964
+// i-love-you-package
+// 49674767499561
 
 // group-selection-1
 // 43693893714060

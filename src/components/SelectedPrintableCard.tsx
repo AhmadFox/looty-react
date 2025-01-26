@@ -14,30 +14,30 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 	const [error, setError] = useState(true);
 	const currency = state.fetchedData?.priceRange.minVariantPrice.currencyCode;
 	const stepIndex = state.currentStep;
-	const [ message, setMessage ] = useState((state.steps[stepIndex]?.data as { message?: string })?.message || "");
+	const [message, setMessage] = useState((state.steps[stepIndex]?.data as { message?: string })?.message || "");
 
 	const selectableCard = state.printableCard?.product as Array<
-	{
-		id: string;
-		quantity: number;
-		image: string;
-		title: string;
-		price: string;
-		maxCharacters: string;
-	}
+		{
+			id: string;
+			quantity: number;
+			image: string;
+			title: string;
+			price: string;
+			maxCharacters: string;
+		}
 	> || null;
-	
+
 	const messageHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const messageLength = event.target.value.length; // Get the length of the text
 		setMessageCount(messageLength); // Update state with the length
 		onChangeMessage(event.target.value);
 		setMessage(event.target.value);
 	};
-	
 
-	const handelChangeCard = () => {		
+
+	const handelChangeCard = () => {
 		onChangeMessage('');
-		
+
 		if (state.printableCard) {
 			dispatch({
 				type: "GOTO_STEP",
@@ -47,7 +47,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 	};
 
 	const handelRemoveCard = () => {
-		
+
 		setEmptyPrintableCard(true);
 		onChangeMessage('')
 
@@ -75,9 +75,9 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 		// Check if the placeholder is not empty
 		if (messageCount === 0) {
 			setError(true);
-		  } else {
+		} else {
 			setError(false); // Reset error if placeholder is empty
-		  }
+		}
 	}, [messageCount]);
 
 
@@ -141,7 +141,7 @@ const SelectedPrintableCard: React.FC<SelectedPrintableCardProps> = ({ onChangeM
 			{/* Message Section */}
 			<div className="flex flex-col gap-2 col-span-2">
 				<label htmlFor="message" className="text-lg font-medium">
-				{t("message")} <span className="text-red-500">*</span>
+					{t("message")} <span className="text-red-500">*</span>
 				</label>
 				<textarea
 					rows={4}

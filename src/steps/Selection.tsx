@@ -114,43 +114,6 @@ const Selection = () => {
 			.filter((product): product is Product => product !== null);
 	};
 
-	// Fetch data products for the current step
-	useEffect(() => {
-
-		const fetchTargetVariantsProducts = async () => {
-			setProductsVariant([]);
-			try {
-				const response = await getVariants(targetVariantProductsJson, state.fetchedData?.language as string);
-
-				if (Array.isArray(response)) {
-					setGeneralProducts(response);
-				} else {
-					console.error("Unexpected response structure:", response);
-				}
-				
-			} catch (error) {
-				console.error(
-					"Error fetching or filtering target variant products:",
-					error
-				);
-			}
-		};
-
-		// Check if step has item selected or is it optional step
-		const validNavigation = ((targetVariantSettingsJson.required === '0' ? true : false) || (state.steps[state.currentStep].data ? true : false))
-
-		dispatch({
-			type: "SET_VALID",
-			payload: validNavigation
-		});
-
-		fetchTargetVariantsProducts();
-
-		setSelections(savedSelection);
-		setTotalSelected(savedSelection.reduce((sum, item) => sum + item.quantity, 0))		
-
-	}, [state.currentStep]);
-
 	useEffect(() => {
 		
 		if (generalProducts.length > 0) {
@@ -163,8 +126,9 @@ const Selection = () => {
 		}
 
 		const savedTotalSelected = savedSelection.reduce((sum, item) => sum + item.quantity, 0);
+
+		setSelections(savedSelection);
 		setTotalSelected(savedTotalSelected);
-		setSelections(savedSelection)
 
 	}, [generalProducts, state.currentStep]);
 
@@ -225,8 +189,9 @@ const Selection = () => {
 	useEffect(() => {
 
 		const savedTotalSelected = savedSelection.reduce((sum, item) => sum + item.quantity, 0);
+
+		setSelections(savedSelection);
 		setTotalSelected(savedTotalSelected);
-		setSelections(savedSelection)
 
 	}, [savedSelection, state.currentStep]);
 
@@ -251,12 +216,42 @@ const Selection = () => {
 
 	}, [isItemUpdate, state.currentStep, productsVariant, selections, totalSelected]);
 
+		// Fetch data products for the current step
+		useEffect(() => {
 
-	console.log('targetVariantSettingsJson +++', targetVariantSettingsJson);
-	console.log('targetVariantProductsJson +++', targetVariantProductsJson);
-	console.log('productsVariant +++', productsVariant);
+			setProductsVariant([]);
+			const fetchTargetVariantsProducts = async () => {
+				try {
+					const response = await getVariants(targetVariantProductsJson, state.fetchedData?.language as string);
 	
-
+					if (Array.isArray(response)) {
+						setGeneralProducts(response);
+					} else {
+						console.error("Unexpected response structure:", response);
+					}
+					
+				} catch (error) {
+					console.error(
+						"Error fetching or filtering target variant products:",
+						error
+					);
+				}
+			};
+	
+			// Check if step has item selected or is it optional step
+			const validNavigation = ((targetVariantSettingsJson.required === '0' ? true : false) || (state.steps[state.currentStep].data ? true : false))
+	
+			dispatch({
+				type: "SET_VALID",
+				payload: validNavigation
+			});
+	
+			fetchTargetVariantsProducts();
+	
+			setSelections(savedSelection);
+			setTotalSelected(savedSelection.reduce((sum, item) => sum + item.quantity, 0))		
+	
+		}, [state.currentStep]);
 	
 
 	return (

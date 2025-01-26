@@ -64,24 +64,24 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 		const period = hour >= 12 && hour < 24 ? "PM" : "AM";
 		const formattedHour = hour % 12 || 12;
 		const formattedMinute = minute < 10 ? `0${minute}` : minute;
-	  
+
 		return `${formattedHour}:${formattedMinute} ${period}`;
 	};
 
 
 	const getFormattedTimeSlot = (start: number, end: number) => {
 
-		if(state.steps[0].data === "delivery_to_location") {
+		if (state.steps[0].data === "delivery_to_location") {
 			if (start >= 1380) {
-			  return null;  // Skip or return null if start time is 11:00 PM or later
+				return null;  // Skip or return null if start time is 11:00 PM or later
 			}
 		}
-	  
+
 		const startHour = Math.floor(start / 60);
 		const startMinute = start % 60;
 		const endHour = Math.floor(end / 60);
 		const endMinute = end % 60;
-	  
+
 		return `${formatTime(startHour, startMinute)} - ${formatTime(endHour, endMinute)}`;
 	};
 
@@ -133,7 +133,7 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 			const availableDate = (currentHour * 60 + currentMinutes) >= endHours - 30
 				? new Date(today.setDate(today.getDate() + 1)).toLocaleDateString("en-CA")
 				: todayString;
-			
+
 			setAvailableDateDelevery(availableDate);
 		}
 
@@ -192,12 +192,12 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 				<label htmlFor="deliveryDate" className="text-lg font-medium">
 					{
 						state.steps[0].data === "delivery_to_location" ?
-						<Fragment>
-							{t("delivery_date")} <span className="text-red-500">*</span>
-						</Fragment>:
-						<Fragment>
-							{t("pickup_date")} <span className="text-red-500">*</span>
-						</Fragment>
+							<Fragment>
+								{t("delivery_date")} <span className="text-red-500">*</span>
+							</Fragment> :
+							<Fragment>
+								{t("pickup_date")} <span className="text-red-500">*</span>
+							</Fragment>
 					}
 				</label>
 				<input
@@ -214,57 +214,60 @@ const DateTime = ({ onDateTimeChange }: DateTimeProps) => {
 
 			{
 				state.steps[0].data === "delivery_to_location" ?
-				<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
-					<label htmlFor="deliveryTime" className="text-lg font-medium">
-						{t("available_delivery_time")} <span className="text-red-500">*</span>
-					</label>
-					<select
-						name="deliveryTime"
-						id="deliveryTime"
-						value={formData.deliveryTime}
-						onChange={handleChange}
-						disabled={!formData.deliveryDate}
-						className="h-[37px] sm:h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
-					>
-						<option disabled value="">
-							{t("select_time")}
-						</option>
-						{availableTimeSlots.map((slot) => (
-							slot.start < 1380 &&
-							<option key={slot.value} value={slot.value}>
-								{getFormattedTimeSlot(slot.start, slot.end)}
+					<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
+						<label htmlFor="deliveryTime" className="text-lg font-medium">
+							{t("available_delivery_time")} <span className="text-red-500">*</span>
+						</label>
+						<select
+							name="deliveryTime"
+							id="deliveryTime"
+							value={formData.deliveryTime}
+							onChange={handleChange}
+							disabled={!formData.deliveryDate}
+							className="h-[37px] sm:h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
+						>
+							<option disabled value="">
+								{t("select_time")}
 							</option>
-						))}
-					</select>
-					{error && <small className="text-red-500">{error.deliveryTime}</small>}
-				</div> :
-				<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
-				<label htmlFor="pickupTime" className="text-lg font-medium">
-					{t("pickup_time")} <span className="text-red-500">*</span>
-				</label>
-				<select
-					name="pickupTime"
-					id="pickupTime"
-					value={formData.pickupTime}
-					onChange={handleChange}
-					disabled={!formData.deliveryDate}
-					className="h-[37px] sm:h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
-				>
-					<option disabled value="">
-						{t("select_time")}
-					</option>
-					{availableTimeSlots.map((slot) => (
-						slot.start < 1410 &&
-						<option key={slot.value} value={slot.value}>
-							{getFormattedTimeSlot(slot.start, slot.end)}
-						</option>
-					))}
-				</select>
-				{error && <small className="text-red-500">{error.pickupTime}</small>}
-			</div>
+							{availableTimeSlots.map((slot) => (
+								slot.start < 1380 &&
+								<option key={slot.value} value={slot.value}>
+									{getFormattedTimeSlot(slot.start, slot.end)}
+								</option>
+							))}
+						</select>
+						{error && <small className="text-red-500">{error.deliveryTime}</small>}
+					</div> :
+					<div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
+						<label htmlFor="pickupTime" className="text-lg font-medium">
+							{t("pickup_time")} <span className="text-red-500">*</span>
+						</label>
+						<select
+							name="pickupTime"
+							id="pickupTime"
+							value={formData.pickupTime}
+							onChange={handleChange}
+							disabled={!formData.deliveryDate}
+							className="h-[37px] sm:h-[48px] px-4 bg-[#f9dbb8] bg-opacity-35 rounded-md"
+						>
+							<option disabled value="">
+								{t("select_time")}
+							</option>
+							{availableTimeSlots.map((slot) => (
+								slot.start < 1415 &&
+								<option key={slot.value} value={slot.value}>
+									{getFormattedTimeSlot(slot.start, slot.end)}
+								</option>
+							))}
+						</select>
+						{error && <small className="text-red-500">{error.pickupTime}</small>}
+					</div>
 
 			}
-
+			<div className="col-span-2">
+				<p className="w-full text-center">{t('work_hours')}: {getFormattedTimeSlot(startHours, endHours)}</p>
+			</div>
+			
 			
 		</Fragment>
 	);
